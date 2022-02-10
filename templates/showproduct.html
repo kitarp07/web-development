@@ -1,0 +1,23 @@
+{% extends 'file.html'  %}
+{% load static %}
+{%block content%}
+{%for a in products%}
+<div style="margin-bottom: 20px;">
+    <div>
+    Title: {{a.title}} <br>
+    Author: {{a.author}} <br>
+    Image: {{a.image}}<br>
+
+    </div>
+
+    <div style="margin-bottom: 20px; margin-top: 20px;">
+    
+        <button data-product={{a.id}} data-action="add" class="add-to-cart">Add to cart</button>
+    
+    </div>
+    
+</div>
+
+
+{%endfor%}
+{%endblock%}

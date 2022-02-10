@@ -1,0 +1,67 @@
+{% extends 'file.html' %}
+
+{%load static%}
+{%block content%}
+<a href="{% url 'create-order' %}"><button class="btn btn-primary text-right"> Add New</button></a>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>customer</th>
+                <th>order</th>
+                <th>city</th>
+                <th>Shipping Address</th>
+                <th>date_added</th>
+                <th>order id</th>
+                <th>status</th>
+                <th>update</th>
+                <th>remove</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+
+            {%for i in orders_products%}
+            <tr>
+                <td>{{i.order.customer}}</td>
+                <td>{{i.item}}</td>
+                {%for j in i.order.checkout_set.all%}
+                {%if j %}
+                <td>{{j.city}}</td>
+                <td>{{j.address}}</td>
+                <td>{{j.date_added}}</td>
+                {%else%}
+                <td></td>
+                
+                
+                <td></td>
+                <td></td>
+                {%endif%}
+
+
+                {%endfor%}
+                <td>{{i.order.order_id}}</td>
+                <td>{{i.order.status}}</td>
+
+                <td><a class="btn btn-sm btn-info" href="">Update</a></td>
+                <td><a class="btn btn-sm btn-danger" href="{% url 'delete-checkout' i.id %}">Remove</a></td>
+
+            </tr>
+
+            {%endfor%}
+
+
+
+
+
+
+        </tbody>
+
+      
+
+    </table>
+</div>
+
+{%endblock%}

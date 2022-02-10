@@ -1,0 +1,17 @@
+<h1>
+    Login
+</h1>
+<form  method="post">
+    {%csrf_token%}
+    <div>
+        <input type="text" name="un" placeholder="" />
+    </div>
+    <br/>
+    <div>
+        <input type="password" name="pw" placeholder="Password" />
+    </div>
+    
+    <div>
+        <input type="submit" value="login" placeholder="Create" />
+    </div>
+</form>

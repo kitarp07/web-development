@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block maincontent%}
+<div class="col-lg-12" style="background-color: white;">
+    <!-- New arrivals section-->
+
+    <div class="row ">
+        {% for product in products%}
+        <div class="col-lg-2">
+
+            <div class="card" style="width: 9rem;">
+
+                <a href="">
+                    <img  class="card-img-top" src="{{product.imageurl}}"/>
+                </a>
+
+                <div class="card-body">
+                    <h5 class="card-title">{{product.title}}</h5>
+                    <h6 class="card-title">{{product.author}}</h6>
+                    <p class="card-text">Rs{{product.price|floatformat:0}}</p>
+                    <button data-product="" data-action="add" class="btn btn-primary update-cart-data add-cart">Add to
+                        cart</button>
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+
+</div>
+
+{% endblock maincontent%}

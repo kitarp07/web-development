@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block maincontent%}
+    <form action="" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        <div class="form-group">
+            <label>
+                name
+            </label>
+
+            <input class="form-control" type="text" name="title" value={{product.title}}  />
+
+
+        </div>
+        <div class="form-group">
+            <label>
+                price
+            </label>
+
+            <input class="form-control" type="text" name="price" value={{product.price}}  />
+        </div>
+        <div class="form-group">
+            <label>
+                author
+            </label>
+
+            <input class="form-control"  type="text" name="author" value={{product.author}} />
+        </div>
+        <div class="form-group">
+            <label>
+                
+            </label>
+
+            {{imageform}}
+        </div>
+        <div class="form-group">
+            <label>
+                category
+            </label>
+
+            <select value="{{product.category}}" name="category">
+                <option value="{{product.category}}">{{product.category}}</option>
+                <option value="Children">Childrens</option>
+                <option value="New Arrival">New Arrival</option>
+                <option value="Self Help">Self Help</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Non-Fiction">Non-Fiction</option>
+                <option value="Health and Fitness">Health and Fitness</option>
+                <option value="Popular right now">Popular right now</option>
+                
+            </select>
+        </div>
+        <div class="form-group">
+            <label>
+                submit
+            </label>
+
+            <input type="submit" name="submit" class="form-control" />
+        </div>
+    </form>
+    {% endblock maincontent%}

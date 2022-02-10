@@ -1,0 +1,108 @@
+{%extends 'base.html'%}
+{%load static%}
+{% block maincontent %}
+
+
+
+<style>
+        .hidden {
+            display: none !important;
+        }
+</style>
+<div id="form-wrapper">
+    <form id="form">
+        <!-- <div id="user-info">
+            <div>
+                <input required style="width: 300px;" type="text" name="name"
+                    placeholder="Name..">
+            </div>
+            <br>
+            <div class="form-field">
+                <input required style="width: 300px;"  type="email" name="email"
+                    placeholder="Email..">
+            </div>
+        </div> -->
+
+        <div id="shipping-info">
+            <hr>
+            <p>Shipping Information:</p>
+            <hr>
+            <div class="form-field ">
+                <input style="width: 200px;" class="form-control" type="text" name="address"
+                    placeholder="Address..">
+            </div>
+            <br>
+            <div class="form-field">
+                <input style="width: 300px;" class="form-control" type="text" name="city"
+                    placeholder="City..">
+            </div>
+        
+        </div>
+
+        <hr>
+        <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+    </form>
+</div>
+
+<br>
+
+<div class="box hidden" id="place-order-box">
+    <input id="place-order" class="btn btn-success btn-block" type="submit" value="Place Order">
+</div>
+
+<script type="text/javascript">
+    var productsAdded = '{{order.productsAdded}}'
+    var cart_total = '{{order.getCartTotal}}'
+
+    //hide continue button and show place order
+    var form = document.getElementById('form')
+  
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log('submitted')
+        document.getElementById('form-button').classList.add('hidden')
+        document.getElementById('place-order-box').classList.remove('hidden')
+    }) 
+
+    //checkout
+    document.getElementById('place-order').addEventListener('click', function(e){
+        submitCheckoutForm()
+    })
+
+    function submitCheckoutForm() {
+
+        var userData = {
+            'cart_total': cart_total
+        }
+        var userShippingdata  = {
+            'address': null,
+            'city': null,
+        }
+
+        if (productsAdded != 'False') {
+            userShippingdata.address = form.address.value
+            userShippingdata.city = form.city.value
+        }
+
+        var url = '/checkout-process/'
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({'form': userShippingdata, 'cart': userData})
+        })
+        .then((response)=>response.json())
+        .then((data)=>{
+            console.log(data)
+            alert('Your order has been placed.')
+            window.location.href = "{%url 'dash'%}"
+        })
+    }
+
+
+</script>
+
+{%endblock maincontent%}

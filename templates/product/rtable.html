@@ -1,0 +1,43 @@
+{% extends 'file.html' %}
+
+{%load static%}
+{%block content%}
+<a href="{% url 'add-product' %}"><button class="btn btn-primary text-right"> Add New</button></a>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>author</th>
+                <th>price</th>
+                <th>image</th>
+                <th>date</th>
+                <th>category</th>
+                <th>update</th>
+                <th>remove</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {%for product in products%}
+            <tr>
+
+                <td>{{product.id}}</td>
+                <td>{{product.title}}</td>
+                <td>{{product.author}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.image}}</td>
+                <td>{{product.date_added}}</td>
+                <td>{{product.category}}</td>
+                <td><a class="btn btn-sm btn-info" href="{% url 'update-product' product.id %}">Update</a></td>
+                <td><a class="btn btn-sm btn-danger" href="{% url 'delete-product' product.id %}">Remove</a></td>
+
+            </tr>
+            {%endfor%}
+        </tbody>
+
+    </table>
+</div>
+
+{%endblock%}
