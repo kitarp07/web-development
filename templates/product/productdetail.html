@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{%load static%}
+
+{%block maincontent%}
+<br>
+<br>
+
+<div class="container-detail">
+    <div style="flex: 1;">
+        <img width="80%" src="{{product.imageurl}}" alt="" />
+    </div>
+
+    <div style="flex: 2;">
+        <div>
+            <h1 class="detail-title"> {{product.title}} </h1>
+
+            <div>
+                by <p class="detail-author">{{product.author}}</p>
+            </div>
+
+
+        </div>
+
+        <h2 class="detail-title">Rs {{product.price|floatformat:0}}</h2>
+
+        <hr>
+
+
+        <p class="detail-title" style="font-size: 20px;">Overview </p>
+        <p class="detail-title" style="font-size: 15px; font-family: Arial, Helvetica, sans-serif;">
+            {{product.description}}
+        </p>
+
+
+        <div style="position: sticky; margin-top: 40px;">
+            <button class="btn btn-primary">Add to cart</button>
+            <button class="btn btn-secondary">Buy Now</button>
+        </div>
+    </div>
+    <br>
+
+   
+</div>
+
+<div>
+    <p style="margin-left: 600px; ;" class="detail-title">
+        Related Products
+    </p>
+
+    <div class="row ">
+        {% for product in relatedProducts%}
+        <div class="col-lg-2">
+
+            <div class="card" style="width: 9rem;">
+                 
+                <a href="{% url 'product-detail' product.id %}">
+                    <img  class="card-img-top img-container" src="{{product.imageurl}}"/>
+                </a>
+
+                <div class="card-body">
+                    <h5 class="card-title">{{product.title}}</h5>
+                    <h6 class="card-title">{{product.author}}</h6>
+                    <p class="card-text">Rs{{product.price|floatformat:0}}</p>
+                    <button data-product={{product.id}} data-action="add" class="btn btn-primary update-cart-data add-to-cart">Add to
+                        cart</button>
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock maincontent%}

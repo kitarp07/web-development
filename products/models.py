@@ -25,6 +25,7 @@ class Products(models.Model):
     image = models.ImageField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=200, null=True, choices=CATEGORY)
+    description = models.TextField(null=True, blank=True)
 
 
     

@@ -5,6 +5,7 @@ import json
 from math import prod
 from multiprocessing import context
 from operator import itemgetter
+import re
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
@@ -146,6 +147,7 @@ def updateProduct(request, pk):
         imageform = ImageForm(request.POST, request.FILES, instance=product)
         product.title = request.POST.get('title')
         product.author = request.POST.get('author')
+        product.description = request.POST.get('description')
         product.price = request.POST.get('price')
         product.category = request.POST.get('category')        
         product.save()

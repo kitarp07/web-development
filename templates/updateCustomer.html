@@ -1,4 +1,6 @@
-{% load static %}
+{%extends 'base.html'%}
+{%load static%}
+{% block maincontent %}
 <head>
 
     <script src="{% static 'js/validation.js' %}" ></script>
@@ -45,3 +47,4 @@
     
     
 </form>
+{% endblock maincontent %}

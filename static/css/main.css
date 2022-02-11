@@ -44,3 +44,85 @@
     width: 100%;
     height: auto;
 }
+
+.container-detail {
+    width: 800px;
+    height: 600px;
+    border: 20px;
+    offset-position: auto;
+    margin-left: 300px;
+    display: flex;
+    align-items: flex-stretch;
+    border-bottom: 1px rgb(47, 38, 38);
+}
+
+.detail-title {
+    font-family: Poynter,Georgia,serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.8rem;
+    line-height: 1.25;
+
+}
+.detail-author {
+    font-family: Lato, sans-serif;
+    display: inline-block;
+    color: rebeccapurple;
+    line-height: 1;
+}
+
+.login-container {
+    width: 400px;
+    
+    border: 20px;
+    opacity: 0.75;
+    offset-position: auto;
+    margin-left: 550px;
+    border-bottom: 1px rgb(47, 38, 38);
+    border-radius: 4px;
+    justify-content: center;
+    margin-bottom: 100px;
+    margin-top: 50px;
+    
+    
+    
+}
+
+.login-inside {
+    margin-left: 50px;
+    margin-top: 40px;
+    
+
+
+}
+
+#login-button {
+    width: 100px;
+    margin-left: 30px;
+}
+
+#login-input {
+    width: 300px;
+    color: black;
+}
+
+#login-header {
+    font-family:Arial,sans-serif;
+    display: inline-block;
+    line-height: 1;
+    font-size: 28px;
+    margin-left: 50px;
+    font-weight: 500;
+    color: black;
+
+
+}
+
+#login-label {
+    font-weight: 500;
+
+
+}
+
+
+

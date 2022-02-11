@@ -10,9 +10,9 @@
         <div class="col-lg-2">
 
             <div class="card" style="width: 9rem;">
-
-                <a href="">
-                    <img  class="card-img-top" src="{{product.imageurl}}"/>
+                 
+                <a href="{% url 'product-detail' product.id %}">
+                    <img  class="card-img-top img-container" src="{{product.imageurl}}"/>
                 </a>
 
                 <div class="card-body">

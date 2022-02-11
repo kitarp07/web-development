@@ -42,8 +42,12 @@ processCheckout,
 customerCheckout,
 deleteCheckedoutOrder,
 base,
-home
+home,
 
+)
+
+from products.views import (
+   product_detail,
 )
 
 urlpatterns = [
@@ -69,7 +73,9 @@ urlpatterns = [
     path('admincheckout/', adminCheckout, name='admin-checkout'),
     path('checkout-process/', processCheckout, name='process-checkout'),
     path('checkout/', customerCheckout, name='checkout'),
-    path('delete-checkout/<int:pk>/', deleteCheckedoutOrder, name='delete-checkout')
+    path('delete-checkout/<int:pk>/', deleteCheckedoutOrder, name='delete-checkout'),
+
+    path('product-detail/<int:pk>/', product_detail, name='product-detail'),
 
 
 
