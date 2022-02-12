@@ -29,3 +29,13 @@ class OrderForm(ModelForm):
         model = Order
         fields = ('__all__')
 
+class OrderProductForm(ModelForm):
+    class Meta:
+        model = OrderProduct
+        fields = ('__all__')
+
+class ShippingForm(ModelForm):
+    class Meta:
+        model = Checkout
+        fields = ('__all__')
+

@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group
 
-from myproject.forms import CustomerForm, ImageForm, ProductForm, OrderForm
+from myproject.forms import CustomerForm, ImageForm, OrderProductForm, ProductForm, OrderForm, ShippingForm
 
 from customer.models import Customer
 from myproject.decoraters import user_authentication, admin_restrcited
@@ -196,14 +196,39 @@ def orders_view(request):
 
 
 def createOrder(request):
-    form = OrderForm()
+    orderform = OrderForm()
+    orderproductform = OrderProductForm()
+    checkoutform = ShippingForm()
     customer = Customer.objects.all()
     product = Products.objects.all()
     if request.method == 'POST':
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            form.save()
-    context = {'form': form}
+        orderform = OrderForm(request.POST)
+        orderproductform = OrderProductForm(request.POST)
+        checkoutform = ShippingForm(request.POST)
+        orderCustomer = request.POST.get('customer')
+        orderProduct = request.POST.get('item')
+        orderStatus = request.POST.get('status')
+        orderCustomer_object = Customer.objects.get(id=orderCustomer)
+        orderProduct_object = Products.objects.get(id=orderProduct)
+        order, created = Order.objects.get_or_create(
+            customer=orderCustomer_object, order_placed=False, status= orderStatus, order_id= datetime.datetime.now().timestamp())
+        order.save()
+        order.order_placed = True
+        orderQuantity = request.POST.get('quantity')
+        orderProduct, created = OrderProduct.objects.get_or_create(
+        order=order, item=orderProduct_object, quantity=orderQuantity)
+        orderProduct.save()
+        checkoutAddress = request.POST.get('address')
+        checkoutCity = request.POST.get('city')
+        Checkout.objects.create(
+                customer=orderCustomer_object,
+                order=order,
+                city=checkoutCity,
+                address=checkoutAddress,
+
+            )
+        return redirect('/admincheckout/')
+    context = {'customer': customer, 'product':product}
     return render(request, 'order/createorder.html', context)
 
 
