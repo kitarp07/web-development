@@ -1,68 +1,105 @@
 {% extends 'base.html' %}
-
+{%load static%}
 {% block maincontent%}
-    <form action="" method="post" enctype="multipart/form-data">
-        {%csrf_token%}
-        <div class="form-group">
-            <label>
-                name
-            </label>
-
-            <input class="form-control" type="text" name="title" value={{product.title}}  />
-
-
+<div>
+    <br>
+    <h1 style="padding-left: 350px;" id="login-header">
+        Update Product Details
+    </h1>
+    
+    
+    <div class="addproduct form-group" style="width: 950px;">
+        <div style="width: 800px">
+            <hr>
+    
         </div>
-        <div class="form-group">
-            <label>
-                price
-            </label>
+        
+        <form action="" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            <div style="display: flex; align-items: stretch;">
+                <div class="form-field" style="flex: 1;">
+                    <label id="login-label">
+                        Name:
+                    </label>
 
-            <input class="form-control" type="text" name="price" value={{product.price}}  />
-        </div>
-        <div class="form-group">
-            <label>
-                author
-            </label>
+                    <input id="login-input" type="text" name="title" class="form-control" value={{product.title}}   />
 
-            <input class="form-control"  type="text" name="author" value={{product.author}} />
-        </div>
-        <div class="form-group">
-            <label>
-                description
-            </label>
 
-            <input type="text" name="description" value="{{product.description}}" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label>
+                </div>
+                <br>
+                <div class="form-field" style="flex: 1;">
+                    <label id="login-label">
+                        Price
+                    </label>
+
+                    <input id="login-input" type="text" name="price" class="form-control" value={{product.price}}  />
+                </div>
+
+            </div>
+
+            <br>
+            <div style="display: flex; align-items: stretch;">
+                <div class="form-field" style="flex: 1;">
+                    <label id="login-label">
+                        Author
+                    </label>
+
+                    <input id="login-input" type="text" name="author" class="form-control" value={{product.author}} />
+                </div>
                 
-            </label>
+                <div class="form-field" style="flex: 1;">
+                    <label id="login-label">
+                        Description
+                    </label>
 
-            {{imageform}}
-        </div>
-        <div class="form-group">
-            <label>
-                category
-            </label>
+                    <textarea type="text" style="width: 400px; height: 100px;" name="description" class="form-control">
+                        {{product.description}}
 
-            <select value="{{product.category}}" name="category">
-                <option value="{{product.category}}">{{product.category}}</option>
-                <option value="Children">Childrens</option>
-                <option value="New Arrival">New Arrival</option>
-                <option value="Self Help">Self Help</option>
-                <option value="Fiction">Fiction</option>
-                <option value="Non-Fiction">Non-Fiction</option>
-                <option value="Health and Fitness">Health and Fitness</option>
-                <option value="Popular right now">Popular right now</option>
-                
-            </select>
-        </div>
-        <div class="form-group">
-            <label>
-                submit
-            </label>
+             </textarea>
+             <br>
+                </div>
+            </div>
+            <br>
+            <div style="display: flex; align-items: stretch;">
+                <div class="form-field" style="flex: 1;">
+                    <label id="login-label">
+                        Image
+                    </label>
+                  <div class="form-control " id="login-input" style="width: 295px;"  >
+                    {{imageform}}
 
-            <input type="submit" name="submit" class="form-control" />
-        </div>
-    </form>
-    {% endblock maincontent%}
+                  </div>
+                    
+                </div>
+                <br>
+
+                <div class="form-field" style="flex: 1;">
+                    <label id="login-label">
+                        Category
+                    </label>
+
+                    <select class="form-control"  value="{{product.category}}" name="category" id="login-input">
+                        <option value="{{product.category}}">{{product.category}}</option>
+                        <option value="Childrens">Childrens</option>
+                        <option value="New Arrival">New Arrival</option>
+                        <option value="Self Help">Self Help</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Non-Fiction">Non-Fiction</option>
+                        <option value="Health and Fitness">Health and Fitness</option>
+                        <option value="Popular right now">Popular right now</option>
+
+                    </select>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div>
+                <input style="margin-top: 8px; margin-left: 200px; width: 130px;" id="login-button" value="Update Product" type="submit" name="submit"
+                    class="form-control btn btn-primary mb-2" />
+                <button style="margin-left: 10px; " id="login-button" class="btn btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock maincontent%}

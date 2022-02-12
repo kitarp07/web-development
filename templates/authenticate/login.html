@@ -2,16 +2,16 @@
 {% load static %}
 {%block maincontent%}
 
-<div class="login-container shadow" >
+<div class="login-container shadow">
     <br>
     <h1 id="login-header">
         Login
     </h1>
-<br>
+    <br>
 
     <div class="login-inside form-group">
-       
-        <form  method="post">
+
+        <form method="post">
             {%csrf_token%}
             <div>
                 <label id="login-label">
@@ -19,17 +19,18 @@
                 </label>
                 <input class="form-control" id="login-input" type="text" name="un" placeholder="" />
             </div>
-            <br/>
+            <br />
 
             <div>
                 <label id="login-label">
-                   Password
+                    Password
                 </label>
                 <input class="form-control" id="login-input" type="password" name="pw" placeholder="Password" />
             </div>
-            
+
             <div style="margin-top: 50px;">
-                <input style="margin-top: 8px;" id="login-button" class="  btn btn-primary mb-2" type="submit" value="Login" />
+                <input style="margin-top: 8px;" id="login-button" class="  btn btn-primary mb-2" type="submit"
+                    value="Login" />
                 <button style="margin-left: 10px;" id="login-button" class="btn btn-secondary">Cancel</button>
             </div>
         </form>
@@ -38,9 +39,13 @@
     <hr>
     <aside style="font-size: 10px; margin-left: 150px;">New to BuyBooks?</aside>
     <br>
-    <button style="margin-left: 90px; width: 200px;" id="login-button" class="btn btn-success">Create New Account</button>
-     <br>
-     <br>
+    <a href="{% url 'register'%}">
+
+        <button style="margin-left: 90px; width: 200px;" id="login-button" class="btn btn-success">Create New
+            Account</button>
+    </a>
+    <br>
+    <br>
 
 </div>
 {%endblock maincontent%}

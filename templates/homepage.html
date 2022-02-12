@@ -19,7 +19,7 @@
                     <h5 class="card-title">{{product.title}}</h5>
                     <h6 class="card-title">{{product.author}}</h6>
                     <p class="card-text">Rs{{product.price|floatformat:0}}</p>
-                    <button data-product="" data-action="add" class="btn btn-primary update-cart-data add-cart">Add to
+                    <button data-product={{product.id}} data-action="add" class="btn btn-primary add-to-cart">Add to
                         cart</button>
 
                 </div>

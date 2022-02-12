@@ -2,7 +2,12 @@
 
 {%load static%}
 {%block content%}
-<a href="{% url 'create-order' %}"><button class="btn btn-primary text-right"> Add New</button></a>
+<h1 style="font-family: Arial, Helvetica, sans-serif; font-size: 23px; display: inline;">
+    Orders
+</h1>
+<a style="padding-left: 800px; display: inline;" href="{% url 'create-order' %}"><button class="btn btn-primary text-right"> Add Order</button></a>
+<br>
+<br>
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead class="thead-dark">
@@ -63,5 +68,44 @@
 
     </table>
 </div>
+<nav style="padding-left: 400px;" aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if orders_products.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ orders_products.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <li class="disabled" ><a class="page-link" aria-label="Previous" href="#">&laquo;</a></li>
+        </li>
+       
+        {%endif%}
 
+        {% for i in orders_products.paginator.page_range%}
+        {% if order_productss.number == i%}
+
+        <li class="page-item"><a class="page-link" href="#">{{i}}</a></li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if orders_products.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ orders_products.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <li class="disabled"><a class="page-link" aria-label="Previous" href="#">&laquo;</a></li>
+        </li>
+        
+        {%endif%}
+
+
+    </ul>
+</nav>
 {%endblock%}

@@ -43,9 +43,9 @@
 
 </head>
 
-<body>
-    <div class="container-fluid">
-        <div class="row">
+<body >
+    <div class="container-fluid" >
+        <div class="row " style="background-color: #F0F2F5;">
             <div class="top-area">
                 <div class="logo">
                     <img src="{% static 'img/spidey.jfif' %}" width="128px" height="128px" />
@@ -93,13 +93,19 @@
                 {%else%}
 
                 <div>
-                    
-                        <a href="{% url 'login' %}">
-                            <button class="btn btn-primary" id="login">
-                                <b>Sign-in</b>
-                            </button>
-                        </a>
-                   >
+
+                    <a href="{% url 'login' %}">
+                        <button class="btn btn-primary" id="login">
+                            <b>Sign-in</b>
+                        </button>
+                    </a>
+
+                    <a href="{% url 'register' %}">
+                        <button style="margin-top: 10px;" class="btn btn-secondary" id="login">
+                            <b>Register</b>
+                        </button>
+                    </a>
+
 
 
                 </div>
@@ -115,7 +121,7 @@
 
     <!-- navigationbar -->
     <div class="col-lg-12 navdiv">
-        <nav class="navbar navbar-expand navbar-light bglight ">
+        <nav class="navbar navbar-expand navbar-light bg-light ">
 
             <div class="collapse navbar-collapse " id="navbarNav">
                 <ul class="navbar-nav navlist ">
@@ -125,7 +131,8 @@
 
 
                     <li class="nav-item dropdown ">
-                        <a class="nav-link movenav" id="drop" data-bs-toggle="dropdown" aria-expanded="false" href="">Categories</a>
+                        <a class="nav-link movenav" id="drop" data-bs-toggle="dropdown" aria-expanded="false"
+                            href="">Categories</a>
                         <ul class=" dropdown-menu">
                             <li><a class="dropdown-item" href="#">New</a></li>
                             <li><a class="dropdown-item" href="#">Children</a></li>
@@ -141,7 +148,7 @@
                     {% if user.is_staff%}
                     <li class="nav-item movenav">
 
-                        <a class="nav-link" href="{% url 'dash'%}">Manage</a>
+                        <a class="nav-link" href="{% url 'admin-checkout'%}">Manage</a>
 
 
 
@@ -149,7 +156,8 @@
                     {% endif %}
                     <li class="nav-item movenav">
                         <div>
-                            <a class="nav-link movenav" style="margin-left: 600px;" href="">
+                            <a class="nav-link movenav" style="padding-left: 1000px;" href="{% url 'cart' %}">
+                                <span style="font-weight: 500;">Cart</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
                                     class="bi bi-cart" viewBox="0 0 16 16">
                                     <path
@@ -166,7 +174,7 @@
             </div>
         </nav>
     </div>
-
+ 
 
     {% block maincontent %}
 

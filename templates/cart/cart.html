@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block maincontent%}
+<div class="cart-container">
+    <br>
+    <h1 style="font-family: Arial, Helvetica, sans-serif; font-size: 23px;">
+        Your Orders
+    </h1>
+    <hr>
+
+    <div class=" cart-box shadow">
+        <div style="flex: 2;">
+            <label id="login-label">
+                Image
+
+            </label> 
+        </div>
+        <div style="flex:2">
+            <label id="login-label">
+                Book
+
+            </label> 
+           
+        </div>
+        <div style="flex:1">
+            <label id="login-label">
+                Price
+
+            </label> 
+            
+        </div>
+        <div style="flex:1">
+            <label id="login-label">
+                Quantity
+
+            </label> 
+            
+        </div>
+        <div style="flex:1">
+            <label id="login-label">
+                Total
+            </label> 
+            
+        </div>
+
+
+
+    </div>
+    {% for item in items %}
+
+    <div class="cart-box">
+        <div style="flex:2">
+            <img src="{{item.item.imageurl}}" width="100px">
+        </div>
+
+        <div style="flex:2">
+            <label id="login-label"> {{item.item.title}} </label>
+            
+        </div>
+        <div style="flex:1">
+            <label id="login-label"> Rs {{item.item.price}} </label>
+
+            
+        </div>
+        <div style="flex:1">
+            <label id="login-label"> {{item.quantity}} </label>
+
+            <p style="display: inline-block; padding-right: 10px; position: sticky; top:0px ">
+                
+            </p>
+
+            <div style="display: inline-block; vertical-align: middle;">
+                <svg class="add-to-cart" data-product="{{item.item.id}}" data-action="add"
+                    style="width: 14px; cursor: pointer; display: block; transition: 5s;"
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                    <path
+                        d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                </svg>
+
+                <svg class="add-to-cart" data-product="{{item.item.id}}" data-action="remove"
+                    style="width: 14px; cursor: pointer;transition: 0.1s; display: block; "
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                </svg>
+
+            </div>
+
+        </div>
+        <div style="flex:1">
+            <label id="login-label">  {{item.getTotal}} </label>
+           
+        </div>
+    </div>
+    {% endfor %}
+
+    <br>
+    <hr>
+    <div>
+        <div class="cart-box">
+            <div style="flex: 3;">
+
+
+
+            </div>
+
+            <div style="flex: 2;">
+                <label id="login-label">
+                    Items: {{order.getCartItems}}
+
+                </label> 
+            </div>
+
+
+
+            <div style="flex: 2;">
+                <label id="login-label">
+                    Total Price:{{order.getCartTotal}}
+
+                </label> 
+            </div>
+
+            <div style="flex: 1;">
+                <a class="btn btn-success" href="{% url 'checkout' %} ">
+                    Checkout
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
+</div>
+{% endblock maincontent%}

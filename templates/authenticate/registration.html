@@ -1,0 +1,94 @@
+{%extends 'base.html' %}
+{% load static %}
+
+{%block maincontent%}
+
+<head>
+
+    <script src="{% static 'js/validation.js' %}"></script>
+
+</head>
+
+<div class="reg-container shadow">
+    <br>
+    <h1 id="login-header">
+        Register
+    </h1>
+    <br>
+
+    <div class="login-inside form-group">
+
+        <form action="" method="post" onsubmit="validateCustomer($event)">
+            {%csrf_token%}
+            <div class="row">
+
+
+                <div class="form-field">
+                    <label id="login-label">
+                        First name
+                    </label>
+                    <input class="form-control" id="login-input" name="fname" placeholder="Full name" />
+                </div>
+                <br>
+                <br>
+                <div class="  form-field">
+                    <label id="login-label">
+                        Email
+                    </label>
+                    <input class="form-control" name="email" id="login-input" placeholder="Email" />
+                </div>
+                <div class=" form-field">
+                    <label id="login-label">
+                       Address
+                    </label>
+                    <input class="form-control" name="address" id="login-input" placeholder="Address" />
+                </div>
+                <br>
+                <div class=" form-field">
+                    <label id="login-label">
+                        Phone number
+                    </label>
+                    <input class="form-control" name="phone" id="login-input" placeholder="Contact" />
+                </div>
+                <br>
+
+                <div class="form-field">
+                    <label id="login-label">
+                        Username
+                    </label>
+                    <input class="form-control" name="username" id="login-input" placeholder="Username" />
+                </div>
+                <br>
+                <div class="form-field">
+                    <label id="login-label">
+                        Password
+                    </label>
+                    <input class="form-control" type="password" id="login-input" name="password"
+                        placeholder="Password" />
+                </div>
+                <div class="form-field">
+                    <label id="login-label">
+                        Confirm Password
+                    </label>
+                    <input class="form-control" type="password" id="login-input" name="confirm-password"
+                        placeholder="Password" />
+                </div>
+                <br>
+                <br>
+                <br>
+                <div>
+                    <input style="margin-top: 8px; width: 140px;" id="login-button" class="  btn btn-primary mb-2" type="submit" name="register"
+                        value="Create Account" placeholder="Create" />
+                    <button style="margin-left: 10px; " id="login-button" class="btn btn-secondary">Cancel</button>
+                </div>
+                <br>
+                <br>
+
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock maincontent %}

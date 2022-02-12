@@ -20,6 +20,7 @@ from myproject.decoraters import user_authentication, admin_restrcited
 from products.models import Products
 from booking.models import Checkout, Order, OrderProduct
 import datetime
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -34,17 +35,16 @@ def login_view(request):
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            
+
             login(request, user)
             return redirect('/dashboard')
-        
+
     return render(request, 'authenticate/login.html')
+
 
 def logoutUser(request):
     logout(request)
     return redirect('login')
-    
-
 
 
 # def loginEntry(request):
@@ -83,33 +83,43 @@ def reg_view(request):
             customer.user = user
             customer.save()
             return redirect('regcomplete')
-            
 
     context = {'form': form}
 
-    return render(request, 'registration.html', context)
+    return render(request, 'authenticate/registration.html', context)
+
 
 def updateCustomer(request, pk):
     customer = Customer.objects.get(id=pk)
+    user = request.user
     form = CustomerForm(request.POST)
     if request.method == 'POST':
-         customer.fname = request.POST.get('fname')
-         customer.laname = request.POST.get('laname')
-         customer.email = request.POST.get('email')
-         customer.phone = request.POST.get('phone')
-         customer.save()
-         return redirect('/dashboard/')
-   
-    context = {'form':form, 'customer': customer}
-    return render (request,'updateCustomer.html', context )
+        customer.name = request.POST.get('name')
+        customer.email = request.POST.get('email')
+        customer.phone = request.POST.get('phone')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm-password')
+        if password != customer.password:
+            if username != customer.username:
+                if password == confirm_password:
+                    user.set_password(password)
+                    customer.password = password
+                user.username = username
+                user.save()
+                customer.username = username
+        customer.save()
+        return redirect('/dashboard/')
 
+    context = {'form': form, 'customer': customer}
+    return render(request, 'updateCustomer.html', context)
 
 
 def deleteCustomer(request, pk):
     customer = Customer.objects.get(id=pk)
     if request.method == 'POST':
         customer.delete()
-    context= {'customer': customer}
+    context = {'customer': customer}
     return render(request, 'deleteCustomer.html', context)
 
 
@@ -117,18 +127,28 @@ def deleteCustomer(request, pk):
 # @admin_restrcited
 def dashboard_view(request):
     customer = Customer.objects.all()
-    context = {'customers': customer}
-    return render(request, 'dashboard.html', context)
+    paginator = Paginator(customer, 5)
+    page_no = request.GET.get('page')
+    page = paginator.get_page(page_no)
+    context = {'customers': page}
+    return render(request, 'customer.html', context)
 
 # @login_required(login_url='login')
 # @admin_restrcited
+
+
 def products_view(request):
     product = Products.objects.all()
-    context = {'products': product}
+    paginator = Paginator(product, 5)
+    page_no = request.GET.get('page')
+    page = paginator.get_page(page_no)
+    context = {'products': page}
     return render(request, 'product/rtable.html', context)
 
 # @login_required(login_url='login')
 # @admin_restrcited
+
+
 def create_products_view(request):
     form = ProductForm()
     if request.method == 'POST':
@@ -138,6 +158,7 @@ def create_products_view(request):
             return redirect('/products/')
     context = {'form': form}
     return render(request, 'product/create.html', context)
+
 
 def updateProduct(request, pk):
     product = Products.objects.get(id=pk)
@@ -149,27 +170,30 @@ def updateProduct(request, pk):
         product.author = request.POST.get('author')
         product.description = request.POST.get('description')
         product.price = request.POST.get('price')
-        product.category = request.POST.get('category')        
+        product.category = request.POST.get('category')
         product.save()
-        
+
         imageform.save()
         return redirect('/products/')
-   
+
     context = {'form': form, 'product': product, 'imageform': imageform}
-    return render (request,'product/updateproduct.html', context )
+    return render(request, 'product/updateproduct.html', context)
+
 
 def deleteProduct(request, pk):
     product = Products.objects.get(id=pk)
     if request.method == 'POST':
         product.delete()
         redirect('/')
-    context= {'product': product}
+    context = {'product': product}
     return render(request, 'product/deleteproduct.html', context)
+
 
 def orders_view(request):
     orders = Order.objects.all()
     context = {'orders': orders}
     return render(request, 'order/order.html', context)
+
 
 def createOrder(request):
     form = OrderForm()
@@ -179,24 +203,27 @@ def createOrder(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             form.save()
-    context={'form': form}
+    context = {'form': form}
     return render(request, 'order/createorder.html', context)
+
 
 def showProducts_view(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        orders, created = Order.objects.get_or_create(customer=customer, order_placed = False)
+        orders, created = Order.objects.get_or_create(
+            customer=customer, order_placed=False)
         items = orders.orderproduct_set.all()
         cartItems = orders.getCartItems
-        
+
     else:
         items = []
         order = {}
         cartItems = 0
 
     products = Products.objects.all()
-    context = {'products': products, 'items': items, 'cartItems':cartItems}
+    context = {'products': products, 'items': items, 'cartItems': cartItems}
     return render(request, 'showproduct.html', context)
+
 
 def updateCartData(request):
     data = json.loads(request.body)
@@ -229,7 +256,11 @@ def adminCheckout(request):
     checkout = Checkout.objects.all()
     orders_customer = Order.objects.all()
     orders_products = OrderProduct.objects.all()
-    context = {'checkout': checkout, 'orders_customer': orders_customer, 'orders_products': orders_products}
+    paginator = Paginator(orders_products, 5)
+    page_no = request.GET.get('page')
+    page = paginator.get_page(page_no)
+    context = {'checkout': checkout, 'orders_customer': orders_customer,
+               'orders_products': page}
     return render(request, 'order/checkout.html', context)
 
 
@@ -238,7 +269,7 @@ def customerCheckout(request):
         customer = request.user.customer
         # get or create order
         order, created = Order.objects.get_or_create(
-            customer=customer, order_placed = False)
+            customer=customer, order_placed=False)
         items = order.orderproduct_set.all()
         cartItems = order.getCartItems
     else:
@@ -246,9 +277,9 @@ def customerCheckout(request):
         order = {'getCartTotal': 0, 'getCartItems': 0}
         cartItems = order['getCartItems']
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems, 'productsAdded':False}
+    context = {'items': items, 'order': order,
+               'cartItems': cartItems, 'productsAdded': False}
     return render(request, 'customer_checkout.html', context)
-
 
 
 def processCheckout(request):
@@ -257,43 +288,56 @@ def processCheckout(request):
     checkoutData = json.loads(request.body)
     if request.user.customer:
         customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, order_placed=False)
-        cart_total= float(checkoutData['cart']['cart_total'])
+        order, created = Order.objects.get_or_create(
+            customer=customer, order_placed=False)
+        cart_total = float(checkoutData['cart']['cart_total'])
         order.order_id = checkoutId
         print(order.getCartTotal)
 
         if cart_total == order.getCartTotal:
-                order.order_placed = True
+            order.order_placed = True
         order.save()
 
         if order.productsAdded == True:
             Checkout.objects.create(
-                customer= customer,
-                order = order,
-                city = checkoutData['form']['city'],
-                address = checkoutData['form']['address'],
-                
+                customer=customer,
+                order=order,
+                city=checkoutData['form']['city'],
+                address=checkoutData['form']['address'],
+
             )
 
     else:
         print('no user')
     return JsonResponse('Order placed', safe=False)
 
+
 def deleteCheckedoutOrder(request, pk):
     order = OrderProduct.objects.get(id=pk)
     if request.method == 'POST':
         order.delete()
-       
+
         redirect('/')
-    context= {'product': product}
+    context = {'product': product}
     return render(request, 'product/deleteproduct.html', context)
 
 
 def base(request):
     return render(request, 'base.html')
 
-def home(request):
-    products = Products.objects.all()
-    context = {'products': products}
-    return render(request, 'homepage.html', context)
 
+def home(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+    # get or create order
+        order, created = Order.objects.get_or_create(
+            customer=customer, order_placed=False)
+        items = order.orderproduct_set.all()
+        cartItems = order.getCartItems
+    else:
+        items = []
+        order = {'getCartTotal': 0, 'getCartItems': 0}
+        cartItems = order['getCartItems']
+    products = Products.objects.all()
+    context = {'products': products, 'items' : items, 'order': order, 'cartItems': cartItems}
+    return render(request, 'homepage.html', context)

@@ -1,62 +1,50 @@
 {%extends 'base.html'%}
 {% load static %}
 {%block maincontent%}
+
 <body>
 
     <div class="container-fluid">
         <div class="row">
-            <div style="margin-bottom: 30px;">
-                <p style="font-size: 22; margin-top: 15px;">
-                    CART- {{cartItems}}
-                </p>
-            </div>
+            <div class="col-lg-2 sidebar shadow navbar-light bg-light ">
+                <nav class="sidebar-nav  ">
 
-            <div class="col-lg-2 p-0 sidebar" style="background-color: white; min-height: 100vh;">
-                <aside>
-                    <ul class="list-group">
-                    
-                            
-                        <li class="list-group-item list-group-item-action">
-                            <a href="{% url 'admin-checkout' %}">
-                                orders
-                            </a></li>
-                        <li class="list-group-item list-group-item-action">
-                            <a href="{% url 'order' %}">
-                                Order
+                
+                    <ul class="navbar-nav navlist" >
 
+
+                        <li class="nav-item" style="cursor: pointer;">
+                            <a class="nav-link active sidebar-label" href="{% url 'admin-checkout' %}">
+                                <label style="cursor: pointer;"> Orders </label>
                             </a>
                         </li>
-                        <li class="list-group-item list-group-item-action">
-                            <a href="{% url 'products' %}">
-                                Products
+                        
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'products' %}">
+                                <label style="cursor: pointer;" class="sidebar-label">Products </label>
 
 
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'dash' %}">
+                                <label style="cursor: pointer;" class="sidebar-label">Customer </label>
+                            </a>
+
+                        </li>
 
 
-                        <a href="{% url 'dash' %}">
-                            <li class="list-group-item list-group-item-action">dash/li>
-                        </a>
-                        <a href="{% url 'showproduct'%}">
-                            <li class="list-group-item list-group-item-action">user</li>
-
-                        </a>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'products' %}">
+                                <label style="cursor: pointer;" class="sidebar-label">dash </label>
+                            </a>
+                        </li>
                     </ul>
 
-                </aside>
+                </nav>
             </div>
 
             <div class="col-lg-10  p-3 body-content" style="min-height: 100vh;">
-
-                <div class="col-lg-8">
-
-                </div>
-                <div class="col-lg-  8">
-                    <span>Hello, {{request.user}}</span>
-                    <a href="{% url 'logout'%}">Logout</a>
-                </div>
-
 
                 <div class="row">
                     <div class="col-lg-12 p-3">
@@ -71,12 +59,12 @@
     </div>
     {%endblock maincontent%}
 
-    
-    <script src="{% static 'js/cart.js' %}"></script>
-    
-    
 
-    
+    <script src="{% static 'js/cart.js' %}"></script>
+
+
+
+
 
 </body>
 

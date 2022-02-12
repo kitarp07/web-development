@@ -50,6 +50,10 @@ from products.views import (
    product_detail,
 )
 
+from booking.views import (
+    customer_cart,
+
+)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('base/', base),
@@ -76,7 +80,7 @@ urlpatterns = [
     path('delete-checkout/<int:pk>/', deleteCheckedoutOrder, name='delete-checkout'),
 
     path('product-detail/<int:pk>/', product_detail, name='product-detail'),
-
+    path('customer-cart/', customer_cart, name="cart")
 
 
    
