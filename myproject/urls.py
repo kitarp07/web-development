@@ -20,20 +20,14 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from customer.views import customer_view
-
+from booking.views import *
+from products.views import *
+from owner.views import *
 from pages.views import (
 login_view, 
 reg_view, 
 new_view, 
-dashboard_view, 
-create_products_view,
-products_view,
 logoutUser,
-updateProduct,
-updateCustomer,
-deleteProduct,
-deleteCustomer,
-createOrder,
 orders_view,
 showProducts_view,
 updateCartData,
@@ -42,18 +36,7 @@ processCheckout,
 customerCheckout,
 deleteCheckedoutOrder,
 base,
-home,
-
-)
-
-from products.views import (
-   product_detail,
-)
-
-from booking.views import (
-    customer_cart,
-
-)
+home,)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('base/', base),
@@ -63,9 +46,9 @@ urlpatterns = [
     path('logout/', logoutUser, name='logout'),
     path('register/', reg_view, name='register'),
     path('register/complete', new_view, name='regcomplete'),
-    path('dashboard/', dashboard_view, name='dash'),
+    path('dashboard/', adminCustomer_view, name='dash'),
     path('add-products/', create_products_view, name='add-product'),
-    path('products/', products_view, name='products'),
+    path('products/', adminProduct_view, name='products'),
     path('update-product/<int:pk>/', updateProduct, name='update-product'),
     path('delete-product/<int:pk>/', deleteProduct, name='delete-product'),
     path('update-customer/<int:pk>/', updateCustomer, name='update-customer'),

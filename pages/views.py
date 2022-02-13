@@ -1,5 +1,4 @@
 from datetime import datetime
-import email
 from itertools import product
 import json
 from math import prod
@@ -89,147 +88,6 @@ def reg_view(request):
     return render(request, 'authenticate/registration.html', context)
 
 
-def updateCustomer(request, pk):
-    customer = Customer.objects.get(id=pk)
-    user = request.user
-    form = CustomerForm(request.POST)
-    if request.method == 'POST':
-        customer.name = request.POST.get('name')
-        customer.email = request.POST.get('email')
-        customer.phone = request.POST.get('phone')
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm-password')
-        if password != customer.password:
-            if username != customer.username:
-                if password == confirm_password:
-                    user.set_password(password)
-                    customer.password = password
-                user.username = username
-                user.save()
-                customer.username = username
-        customer.save()
-        return redirect('/dashboard/')
-
-    context = {'form': form, 'customer': customer}
-    return render(request, 'updateCustomer.html', context)
-
-
-def deleteCustomer(request, pk):
-    customer = Customer.objects.get(id=pk)
-    if request.method == 'POST':
-        customer.delete()
-    context = {'customer': customer}
-    return render(request, 'deleteCustomer.html', context)
-
-
-@login_required(login_url='login')
-# @admin_restrcited
-def dashboard_view(request):
-    customer = Customer.objects.all()
-    paginator = Paginator(customer, 5)
-    page_no = request.GET.get('page')
-    page = paginator.get_page(page_no)
-    context = {'customers': page}
-    return render(request, 'customer.html', context)
-
-# @login_required(login_url='login')
-# @admin_restrcited
-
-
-def products_view(request):
-    product = Products.objects.all()
-    paginator = Paginator(product, 5)
-    page_no = request.GET.get('page')
-    page = paginator.get_page(page_no)
-    context = {'products': page}
-    return render(request, 'product/rtable.html', context)
-
-# @login_required(login_url='login')
-# @admin_restrcited
-
-
-def create_products_view(request):
-    form = ProductForm()
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('/products/')
-    context = {'form': form}
-    return render(request, 'product/create.html', context)
-
-
-def updateProduct(request, pk):
-    product = Products.objects.get(id=pk)
-    form = ProductForm(request.POST, request.FILES)
-    imageform = ImageForm(request.POST, request.FILES, instance=product)
-    if request.method == 'POST':
-        imageform = ImageForm(request.POST, request.FILES, instance=product)
-        product.title = request.POST.get('title')
-        product.author = request.POST.get('author')
-        product.description = request.POST.get('description')
-        product.price = request.POST.get('price')
-        product.category = request.POST.get('category')
-        product.save()
-
-        imageform.save()
-        return redirect('/products/')
-
-    context = {'form': form, 'product': product, 'imageform': imageform}
-    return render(request, 'product/updateproduct.html', context)
-
-
-def deleteProduct(request, pk):
-    product = Products.objects.get(id=pk)
-    if request.method == 'POST':
-        product.delete()
-        redirect('/')
-    context = {'product': product}
-    return render(request, 'product/deleteproduct.html', context)
-
-
-def orders_view(request):
-    orders = Order.objects.all()
-    context = {'orders': orders}
-    return render(request, 'order/order.html', context)
-
-
-def createOrder(request):
-    orderform = OrderForm()
-    orderproductform = OrderProductForm()
-    checkoutform = ShippingForm()
-    customer = Customer.objects.all()
-    product = Products.objects.all()
-    if request.method == 'POST':
-        orderform = OrderForm(request.POST)
-        orderproductform = OrderProductForm(request.POST)
-        checkoutform = ShippingForm(request.POST)
-        orderCustomer = request.POST.get('customer')
-        orderProduct = request.POST.get('item')
-        orderStatus = request.POST.get('status')
-        orderCustomer_object = Customer.objects.get(id=orderCustomer)
-        orderProduct_object = Products.objects.get(id=orderProduct)
-        order, created = Order.objects.get_or_create(
-            customer=orderCustomer_object, order_placed=False, status= orderStatus, order_id= datetime.datetime.now().timestamp())
-        order.save()
-        order.order_placed = True
-        orderQuantity = request.POST.get('quantity')
-        orderProduct, created = OrderProduct.objects.get_or_create(
-        order=order, item=orderProduct_object, quantity=orderQuantity)
-        orderProduct.save()
-        checkoutAddress = request.POST.get('address')
-        checkoutCity = request.POST.get('city')
-        Checkout.objects.create(
-                customer=orderCustomer_object,
-                order=order,
-                city=checkoutCity,
-                address=checkoutAddress,
-
-            )
-        return redirect('/admincheckout/')
-    context = {'customer': customer, 'product':product}
-    return render(request, 'order/createorder.html', context)
 
 
 def showProducts_view(request):
@@ -250,43 +108,8 @@ def showProducts_view(request):
     return render(request, 'showproduct.html', context)
 
 
-def updateCartData(request):
-    data = json.loads(request.body)
-    productId = data['productId']
-    action = data['action']
-
-    print(action, productId)
-
-    customer = request.user.customer
-    item = Products.objects.get(id=productId)
-    order, created = Order.objects.get_or_create(
-        customer=customer, order_placed=False)
-    orderProduct, created = OrderProduct.objects.get_or_create(
-        order=order, item=item)
-
-    if action == 'add':
-        orderProduct.quantity = (orderProduct.quantity + 1)
-    elif action == 'remove':
-        orderProduct.quantity = (orderProduct.quantity - 1)
-
-    orderProduct.save()
-
-    if orderProduct.quantity <= 0:
-        orderProduct.delete()
-
-    return JsonResponse('Item added to cart', safe=False)
 
 
-def adminCheckout(request):
-    checkout = Checkout.objects.all()
-    orders_customer = Order.objects.all()
-    orders_products = OrderProduct.objects.all()
-    paginator = Paginator(orders_products, 5)
-    page_no = request.GET.get('page')
-    page = paginator.get_page(page_no)
-    context = {'checkout': checkout, 'orders_customer': orders_customer,
-               'orders_products': page}
-    return render(request, 'order/checkout.html', context)
 
 
 def customerCheckout(request):
@@ -337,14 +160,6 @@ def processCheckout(request):
     return JsonResponse('Order placed', safe=False)
 
 
-def deleteCheckedoutOrder(request, pk):
-    order = OrderProduct.objects.get(id=pk)
-    if request.method == 'POST':
-        order.delete()
-
-        redirect('/')
-    context = {'product': product}
-    return render(request, 'product/deleteproduct.html', context)
 
 
 def base(request):
