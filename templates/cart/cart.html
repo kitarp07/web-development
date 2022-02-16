@@ -14,34 +14,34 @@
             <label id="login-label">
                 Image
 
-            </label> 
+            </label>
         </div>
         <div style="flex:2">
             <label id="login-label">
                 Book
 
-            </label> 
-           
+            </label>
+
         </div>
         <div style="flex:1">
             <label id="login-label">
                 Price
 
-            </label> 
-            
+            </label>
+
         </div>
         <div style="flex:1">
             <label id="login-label">
                 Quantity
 
-            </label> 
-            
+            </label>
+
         </div>
         <div style="flex:1">
             <label id="login-label">
                 Total
-            </label> 
-            
+            </label>
+
         </div>
 
 
@@ -56,18 +56,18 @@
 
         <div style="flex:2">
             <label id="login-label"> {{item.item.title}} </label>
-            
+
         </div>
         <div style="flex:1">
             <label id="login-label"> Rs {{item.item.price}} </label>
 
-            
+
         </div>
         <div style="flex:1">
             <label id="login-label"> {{item.quantity}} </label>
 
             <p style="display: inline-block; padding-right: 10px; position: sticky; top:0px ">
-                
+
             </p>
 
             <div style="display: inline-block; vertical-align: middle;">
@@ -91,8 +91,8 @@
 
         </div>
         <div style="flex:1">
-            <label id="login-label">  {{item.getTotal}} </label>
-           
+            <label id="login-label"> {{item.getTotal}} </label>
+
         </div>
     </div>
     {% endfor %}
@@ -100,7 +100,7 @@
     <br>
     <hr>
     <div>
-        <div class="cart-box">
+        <div class="cart-box ">
             <div style="flex: 3;">
 
 
@@ -111,7 +111,7 @@
                 <label id="login-label">
                     Items: {{order.getCartItems}}
 
-                </label> 
+                </label>
             </div>
 
 
@@ -120,7 +120,7 @@
                 <label id="login-label">
                     Total Price:{{order.getCartTotal}}
 
-                </label> 
+                </label>
             </div>
 
             <div style="flex: 1;">

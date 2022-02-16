@@ -12,16 +12,16 @@
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th>id</th>
-                <th>name</th>
-                <th>author</th>
-                <th>price</th>
-                <th>description</th>
-                <th>image</th>
-                <th>date</th>
-                <th>category</th>
-                <th>update</th>
-                <th>remove</th>
+                <th>Product id</th>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Date added</th>
+                <th>Product Category</th>
+                <th>Update</th>
+                <th>Remove</th>
             </tr>
         </thead>
 
@@ -34,7 +34,7 @@
                 <td>{{product.author}}</td>
                 <td>{{product.price}}</td>
                 <td>{{product.description}}</td>
-                <td>{{product.image}}</td>
+                <td> <a href="{{MEDIA_URL}}{{product.imageurl}} ">{{product.image}}</a></td>
                 <td>{{product.date_added}}</td>
                 <td>{{product.category}}</td>
                 <td><a class="btn btn-sm btn-info" href="{% url 'update-product' product.id %}">Update</a></td>

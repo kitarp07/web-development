@@ -43,8 +43,8 @@
 
 </head>
 
-<body >
-    <div class="container-fluid" >
+<body>
+    <div class="container-fluid">
         <div class="row " style="background-color: #F0F2F5;">
             <div class="top-area">
                 <div class="logo">
@@ -56,38 +56,44 @@
                         <input id="search-bar" class="form-control" type="search" name="search" />
                     </form>
                 </div>
-                {% if user.is_authenticated %}
-                <div>
-                    <a href="">
 
-                        <div>
-                            <img style="text-align: end; width: 80px;" src="{% static 'img/images/haccount.png' %}" />
-                        </div>
-                        <div style="margin-left: 20px;">
-                            <p style="color: red; position:sticky; bottom:0px;">{{user.customer.name}}</p>
-                        </div>
-
-
-
-
-
-
-
+                <div class="navbar-nav navlist" style="padding-top: 16px">
+                    <a class="nav-link movenav" href="{% url 'cart' %}">
+                        
+                        <svg style="display: inline-block;" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="bg-light"
+                            class="bi bi-cart" viewBox="0 0 16 16">
+                            <path
+                                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                        </svg>
+                        <span style="font-weight:500; color: #000; float: right; font-size: 15px;"> {{cartItems}} </span>
+                        <span style="font-weight:500; color: #000; display: inline;">Cart</span>
+                        
                     </a>
-                    <div style="margin-left: 20px;">
+                    </a>
 
-                        <a style="color: red;  position:sticky; bottom:0px;" href="{% url 'logout'%}">Logout</a>
-                    </div>
+                </div>
+                {% if user.is_authenticated %}
+                <div class="nav-item dropdown " style=" padding-top: 10px; padding-right: 200px;">
+                    <a class="nav-link movenav" id="drop" data-bs-toggle="dropdown" aria-expanded="false" href="">
+                        <div>
+                            <svg style="color: black;" xmlns="http://www.w3.org/2000/svg" width="36" height="36"
+                                fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                            </svg>
+                        </div>
+                        <label class="login-label" style="font-size: 12px; color: black;">
+                            <aside style="font-weight:500;"> {{user.customer.name}} </aside>
+                        </label>
+                        <ul class=" dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'change-password' user.customer.id %}">Change Password</a></li>
+                            <li><a class="dropdown-item" href="{% url 'update-account' user.customer.id %}">Update Details</a></li>
+                            <li><a class="dropdown-item" href="#">Delete Account</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout'%}">Logout</a> </li>
+                        </ul>
+                    </a>
 
 
                 </div>
-
-
-
-
-
-
-
 
 
                 {%else%}
@@ -154,27 +160,11 @@
 
                     </li>
                     {% endif %}
-                    <li class="nav-item movenav">
-                        <div>
-                            <a class="nav-link movenav" style="padding-left: 1000px;" href="{% url 'cart' %}">
-                                <span style="font-weight: 500;">Cart</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                                    class="bi bi-cart" viewBox="0 0 16 16">
-                                    <path
-                                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                                </svg>
-                                <p style="color: red;float: right; font-size: 12px;"> {{cartItems}} </p>
-                            </a>
-
-                            </a>
-
-                        </div>
-                    </li>
                 </ul>
             </div>
         </nav>
     </div>
- 
+
 
     {% block maincontent %}
 

@@ -88,8 +88,6 @@ def reg_view(request):
     return render(request, 'authenticate/registration.html', context)
 
 
-
-
 def showProducts_view(request):
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -108,10 +106,6 @@ def showProducts_view(request):
     return render(request, 'showproduct.html', context)
 
 
-
-
-
-
 def customerCheckout(request):
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -127,39 +121,7 @@ def customerCheckout(request):
 
     context = {'items': items, 'order': order,
                'cartItems': cartItems, 'productsAdded': False}
-    return render(request, 'customer_checkout.html', context)
-
-
-def processCheckout(request):
-    print(request.body)
-    checkoutId = datetime.datetime.now().timestamp()
-    checkoutData = json.loads(request.body)
-    if request.user.customer:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(
-            customer=customer, order_placed=False)
-        cart_total = float(checkoutData['cart']['cart_total'])
-        order.order_id = checkoutId
-        print(order.getCartTotal)
-
-        if cart_total == order.getCartTotal:
-            order.order_placed = True
-        order.save()
-
-        if order.productsAdded == True:
-            Checkout.objects.create(
-                customer=customer,
-                order=order,
-                city=checkoutData['form']['city'],
-                address=checkoutData['form']['address'],
-
-            )
-
-    else:
-        print('no user')
-    return JsonResponse('Order placed', safe=False)
-
-
+    return render(request, 'cart/customer_checkout.html', context)
 
 
 def base(request):
@@ -179,5 +141,6 @@ def home(request):
         order = {'getCartTotal': 0, 'getCartItems': 0}
         cartItems = order['getCartItems']
     products = Products.objects.all()
-    context = {'products': products, 'items' : items, 'order': order, 'cartItems': cartItems}
+    context = {'products': products, 'items': items,
+               'order': order, 'cartItems': cartItems}
     return render(request, 'homepage.html', context)

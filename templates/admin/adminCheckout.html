@@ -14,6 +14,7 @@
             <tr>
                 <th>customer</th>
                 <th>order</th>
+                <th>quantity</th>
                 <th>city</th>
                 <th>Shipping Address</th>
                 <th>date_added</th>
@@ -32,6 +33,7 @@
             <tr>
                 <td>{{i.order.customer}}</td>
                 <td>{{i.item}}</td>
+                <td>{{i.quantity}}</td>
                 {%for j in i.order.checkout_set.all%}
                 {%if j %}
                 <td>{{j.city}}</td>
@@ -50,7 +52,7 @@
                 <td>{{i.order.order_id}}</td>
                 <td>{{i.order.status}}</td>
 
-                <td><a class="btn btn-sm btn-info" href="">Update</a></td>
+                <td><a class="btn btn-sm btn-info" href="{% url 'update-checkout' i.id %}">Update</a></td>
                 <td><a class="btn btn-sm btn-danger" href="{% url 'delete-checkout' i.id %}">Remove</a></td>
 
             </tr>

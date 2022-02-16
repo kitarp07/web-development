@@ -29,3 +29,44 @@ def customer_view(request):
     customer = Customer.objects.all()
     context={'customers': customer}
     return render(request, "file.html", context)
+
+def changePassword(request, pk):
+    customer = Customer.objects.get(id=pk)
+    user = request.user
+    if request.method=='POST':
+        old_password = request.POST.get('oldpassword')
+        new_password = request.POST.get('newpassword')
+        confirm_password = request.POST.get('confirm-password')
+        if customer.password == old_password:
+            if new_password == confirm_password:
+                customer.password = new_password
+                customer.save()
+                user.set_password(new_password)
+                user.save()
+        
+    return render(request, 'customer/changePassword.html')
+
+def updateAccount(request, pk):
+    customer = Customer.objects.get(id=pk)
+    user = request.user
+    form = CustomerForm(request.POST)
+    if request.method == 'POST':
+        customer.name = request.POST.get('name')
+        customer.email = request.POST.get('email')
+        customer.phone = request.POST.get('phone')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm-password')
+        if password != customer.password:
+            if username != customer.username:
+                if password == confirm_password:
+                    user.set_password(password)
+                    customer.password = password
+                user.username = username
+                user.save()
+                customer.username = username
+        customer.save()
+        return redirect('/home/')
+
+    context = {'form': form, 'customer': customer}
+    return render(request, 'customer/updateAccount.html', context)

@@ -19,24 +19,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from customer.views import customer_view
+from customer.views import changePassword, customer_view, updateAccount
 from booking.views import *
 from products.views import *
 from owner.views import *
-from pages.views import (
-login_view, 
-reg_view, 
-new_view, 
-logoutUser,
-orders_view,
-showProducts_view,
-updateCartData,
-adminCheckout,
-processCheckout,
-customerCheckout,
-deleteCheckedoutOrder,
-base,
-home,)
+from pages.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('base/', base),
@@ -61,9 +48,11 @@ urlpatterns = [
     path('checkout-process/', processCheckout, name='process-checkout'),
     path('checkout/', customerCheckout, name='checkout'),
     path('delete-checkout/<int:pk>/', deleteCheckedoutOrder, name='delete-checkout'),
-
+    path('update-checkout/<int:pk>/', updateOrder, name='update-checkout'),
     path('product-detail/<int:pk>/', product_detail, name='product-detail'),
-    path('customer-cart/', customer_cart, name="cart")
+    path('customer-cart/', customer_cart, name="cart"),
+    path('change-password/<int:pk>', changePassword, name='change-password'),
+    path('update-account/<int:pk>', updateAccount, name='update-account')
 
 
    

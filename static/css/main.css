@@ -1,5 +1,5 @@
 #search {
-    margin-left: 400px;
+    padding-left: 400px;
 }
 
 #search-bar {
@@ -20,7 +20,7 @@
 
 .top-area {
     display: flex;
-    align-items: center;
+    align-items: stretch;
 
     height: 100px;
 }
@@ -83,6 +83,7 @@
     justify-content: center;
     margin-bottom: 100px;
     margin-top: 50px;
+    box-shadow: hsl(0, 10%, 60%) 0 0 20px;
     
     
     
@@ -133,6 +134,7 @@
     justify-content: center;
     margin-bottom: 100px;
     margin-top: 50px;
+    box-shadow: hsl(0, 10%, 60%) 0 0 20px;
  
   
     
@@ -170,9 +172,33 @@
 }
 
 .cart-box {
-    width: 900px ; 
     display: flex;
     background-color: white;
+    box-shadow: hsl(0, 10%, 90%) 0 0 20px;
 
+    
+}
+
+.checkout-container {
+    height: 800px;
+    border-bottom: 1px rgb(47, 38, 38);
+    border-color: black;
+    display: flex;
+    box-shadow: hsl(0, 10%, 90%) 0 0 20px;
+
+    
+ 
+  
+    
+}
+
+.checkout-cart-container {
+    background-color: white;
+    border-bottom: 1px rgb(47, 38, 38);
+    border-color: black;
+    justify-content: center;
+    
+ 
+  
     
 }

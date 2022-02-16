@@ -95,7 +95,6 @@ def processCheckout(request):
                 address=checkoutData['form']['address'],
 
             )
-
     else:
         print('no user')
     return JsonResponse('Order placed', safe=False)
