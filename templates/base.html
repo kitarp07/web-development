@@ -45,19 +45,22 @@
 
 <body>
     <div class="container-fluid">
-        <div class="row " style="background-color: #F0F2F5;">
+        <div class="row " style="background-color: white;">
             <div class="top-area">
-                <div class="logo">
-                    <img src="{% static 'img/spidey.jfif' %}" width="128px" height="128px" />
+                <div>
+                    <img class="logo" src="{% static 'img/capture.png' %}" width="140px" height="70px" />
                 </div>
 
-                <div id="search" class="input-group">
+                <div id="search" class="form group">
                     <form method="get" action='search'>
-                        <input id="search-bar" class="form-control" type="search" name="search" />
+                        <input id="search-bar" class="form-control" type="search" style="width: 500px; height: 33px;" placeholder="Search books...." name="search" />
+
                     </form>
                 </div>
 
-                <div class="navbar-nav navlist" style="padding-top: 16px">
+                
+                {% if user.is_authenticated %}
+                <div class="navbar-nav navlist" style=" padding-left: 200px; padding-top: 18px; padding-right: 6px;">
                     <a class="nav-link movenav" href="{% url 'cart' %}">
                         
                         <svg style="display: inline-block;" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="bg-light"
@@ -72,8 +75,7 @@
                     </a>
 
                 </div>
-                {% if user.is_authenticated %}
-                <div class="nav-item dropdown " style=" padding-top: 10px; padding-right: 200px;">
+                <div class="nav-item dropdown " style=" padding-top: 14px; padding-right: 200px;">
                     <a class="nav-link movenav" id="drop" data-bs-toggle="dropdown" aria-expanded="false" href="">
                         <div>
                             <svg style="color: black;" xmlns="http://www.w3.org/2000/svg" width="36" height="36"

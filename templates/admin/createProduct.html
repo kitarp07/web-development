@@ -75,13 +75,9 @@
                     </label>
 
                     <select class="form-control" id="login-input" name="category">
-                        <option value="Childrens">Childrens</option>
-                        <option value="New Arrival">New Arrival</option>
-                        <option value="Self Help">Self Help</option>
-                        <option value="Fiction">Fiction</option>
-                        <option value="Non-Fiction">Non-Fiction</option>
-                        <option value="Health and Fitness">Health and Fitness</option>
-                        <option value="Popular right now">Popular right now</option>
+                        {% for i in category%}
+                        <option value={{i.id}}>{{i.name}}</option>
+                        {%endfor%}
 
                     </select>
                 </div>

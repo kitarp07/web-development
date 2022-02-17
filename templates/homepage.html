@@ -2,42 +2,35 @@
 {% load static %}
 
 {% block maincontent%}
-<div class="col-lg-12" style="background-color: white;">
-    <!-- New arrivals section-->
+<div class="book-container">
+{% for i in category%}
+    <h4>{{i.name}}</h4>
+    <div style="display: flex; flex-direction: row ;">
 
-    <div class="row ">
-        {% for product in products%}
-        <div class="col-lg-2">
-
-            <div class="card" style="width: 9rem;">
-                 
-                <a href="{% url 'product-detail' product.id %}">
-                    <img  class="card-img-top img-container" src="{{product.imageurl}}"/>
-                </a>
-
-                <div class="card-body">
-                    <h5 class="card-title">{{product.title}}</h5>
-                    <h6 class="card-title">{{product.author}}</h6>
-                    <p class="card-text">Rs{{product.price|floatformat:0}}</p>
-                    <button data-product={{product.id}} data-action="add" class="btn btn-primary add-to-cart">Add to
-                        cart</button>
-
-                </div>
-
-
-
-            </div>
-
-
-
-
+    
+    
+    {%for product in i.products_set.all %}
+    <div class="card" style="width: 13rem;"
+        <a href="{% url 'product-detail' product.id %}">
+            <img class="card-img-top " width="100%" height="220px" src="{{product.imageurl}}" />
+        </a>
+        <div class="card-body">
+            <h5 class="card-title" style="font-size: 16px; display: inline;">{{product.title}}</h5>
+            <h6 class="card-title" style="font-size: 14px;">by {{product.author}}</h6>
+            <p class="card-text" style="font-size: 14px;">NPR.{{product.price|floatformat:0}}</p>
+            <button data-product={{product.id}} data-action="add" class="btn btn-primary add-to-cart">Add to
+                cart</button>
         </div>
-        {% endfor %}
-
     </div>
-
+    {%endfor%}
+        
+    </div>
+    <br>
+    <br>
+{% endfor %}
 
 
 </div>
+
 
 {% endblock maincontent%}

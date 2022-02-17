@@ -1,12 +1,22 @@
+.logo {
+padding-left: 100px;
+width: 200px;
+height: 80px;
+
+}
+
 #search {
-    padding-left: 400px;
+    padding-left: 250px;
+    
+    padding-top: 30px;
 }
 
 #search-bar {
-    width: 200px;
-    height: 30px;
-
-    border-style: ridge;
+    width: 500px; 
+    height: 33px;
+    border-style:solid;
+    border-radius: 10px;
+    border-color: #000;
 }
 
 #login {
@@ -41,8 +51,6 @@
 }
 
 .img-container {
-    width: 100%;
-    height: auto;
 }
 
 .container-detail {
@@ -201,4 +209,8 @@
  
   
     
+}
+
+.book-container {
+    padding-left: 50px;
 }

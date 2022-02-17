@@ -5,6 +5,7 @@ from math import prod
 from multiprocessing import context
 from operator import itemgetter
 import re
+from unicodedata import category
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
@@ -16,7 +17,7 @@ from myproject.forms import CustomerForm, ImageForm, OrderProductForm, ProductFo
 
 from customer.models import Customer
 from myproject.decoraters import user_authentication, admin_restrcited
-from products.models import Products
+from products.models import Category, Products
 from booking.models import Checkout, Order, OrderProduct
 import datetime
 from django.core.paginator import Paginator
@@ -141,6 +142,8 @@ def home(request):
         order = {'getCartTotal': 0, 'getCartItems': 0}
         cartItems = order['getCartItems']
     products = Products.objects.all()
+    category = Category.objects.all()
     context = {'products': products, 'items': items,
-               'order': order, 'cartItems': cartItems}
+               'order': order, 'cartItems': cartItems,
+               'category': category,}
     return render(request, 'homepage.html', context)

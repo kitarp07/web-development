@@ -33,13 +33,16 @@
 
 
         <div style="position: sticky; margin-top: 40px;">
-            <button class="btn btn-primary">Add to cart</button>
-            <button class="btn btn-secondary">Buy Now</button>
+            <button data-product={{product.id}} data-action="add" class="btn btn-primary add-to-cart">Add to
+                cart</button>
+            <a data-product={{product.id}} data-action="add" class="btn btn-secondary add-to-cart" onclick="window.open(this.href)" href="{% url 'checkout' %}">
+                 Buy Now
+            </a>
         </div>
     </div>
     <br>
 
-   
+
 </div>
 
 <div>
@@ -52,16 +55,16 @@
         <div class="col-lg-2">
 
             <div class="card" style="width: 9rem;">
-                 
+
                 <a href="{% url 'product-detail' product.id %}">
-                    <img  class="card-img-top img-container" src="{{product.imageurl}}"/>
+                    <img class="card-img-top img-container" src="{{product.imageurl}}" />
                 </a>
 
                 <div class="card-body">
                     <h5 class="card-title">{{product.title}}</h5>
                     <h6 class="card-title">{{product.author}}</h6>
                     <p class="card-text">Rs{{product.price|floatformat:0}}</p>
-                    <button data-product={{product.id}} data-action="add" class="btn btn-primary update-cart-data add-to-cart">Add to
+                    <button data-product={{product.id}} data-action="add" class="btn btn-primary add-to-cart">Add to
                         cart</button>
 
                 </div>

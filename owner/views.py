@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.shortcuts import render
 from datetime import datetime
 from itertools import product
@@ -16,7 +17,7 @@ from myproject.forms import CustomerForm, ImageForm, OrderProductForm, ProductFo
 
 from customer.models import Customer
 from myproject.decoraters import user_authentication, admin_restrcited
-from products.models import Products
+from products.models import Products, Category
 from booking.models import Checkout, Order, OrderProduct
 import datetime
 from django.core.paginator import Paginator
@@ -93,7 +94,8 @@ def create_products_view(request):
         if form.is_valid():
             form.save()
             return redirect('/products/')
-    context = {'form': form}
+    category = Category.objects.all()
+    context = {'form': form, 'category': category}
     return render(request, 'admin/createProduct.html', context)
 
 @login_required(login_url='login')
@@ -108,13 +110,15 @@ def updateProduct(request, pk):
         product.author = request.POST.get('author')
         product.description = request.POST.get('description')
         product.price = request.POST.get('price')
-        product.category = request.POST.get('category')
+        category_id = request.POST.get('category')
+        category_obj = Category.objects.get(id=category_id)
+        product.category = category_obj
         product.save()
 
         imageform.save()
         return redirect('/products/')
-
-    context = {'form': form, 'product': product, 'imageform': imageform}
+    category = Category.objects.all()
+    context = {'form': form, 'product': product, 'imageform': imageform, 'category': category}
     return render(request, 'admin/updateproduct.html', context)
 
 @login_required(login_url='login')

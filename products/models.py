@@ -1,10 +1,19 @@
 
+from re import T
+from statistics import mode
+from unicodedata import name
 from django.db import models
 
 
 # Create your models here.
 
 
+class Category(models.Model):
+    id = models.AutoField(auto_created=True, primary_key=True)
+    name = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 class Products(models.Model):
     CATEGORY= (
         ("Childrens", "Childrens"),
@@ -17,15 +26,15 @@ class Products(models.Model):
         ("Popular right now", "Popular right now"),
          )
 
-  
-    
+    id = models.AutoField(auto_created=True, primary_key=True)
     title = models.CharField(max_length=200, blank=True, null=False)
     price = models.FloatField(null=True)
     author = models.CharField(max_length=200, blank=True, null=True)
     image = models.ImageField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    category = models.CharField(max_length=200, null=True, choices=CATEGORY)
     description = models.TextField(null=True, blank=True)
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE)
+
 
 
     
@@ -44,4 +53,4 @@ class Products(models.Model):
     def __str__(self):
         return self.title
     
-   
+
