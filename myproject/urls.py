@@ -50,7 +50,7 @@ urlpatterns = [
     path('delete-checkout/<int:pk>/', deleteCheckedoutOrder, name='delete-checkout'),
     path('update-checkout/<int:pk>/', updateOrder, name='update-checkout'),
     path('product-detail/<int:pk>/', product_detail, name='product-detail'),
-    path('customer-cart/', customer_cart, name="cart"),
+    path('customer-cart/', customer_cart, name='cart'),
     path('change-password/<int:pk>', changePassword, name='change-password'),
     path('update-account/<int:pk>', updateAccount, name='update-account')
 

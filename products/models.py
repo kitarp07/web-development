@@ -1,7 +1,3 @@
-
-from re import T
-from statistics import mode
-from unicodedata import name
 from django.db import models
 
 

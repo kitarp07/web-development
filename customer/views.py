@@ -44,7 +44,7 @@ def changePassword(request, pk):
                 user.set_password(new_password)
                 user.save()
         
-    return render(request, 'customer/changePassword.html')
+    return render(request, 'customer/changepassword.html')
 
 def updateAccount(request, pk):
     customer = Customer.objects.get(id=pk)

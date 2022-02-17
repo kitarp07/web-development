@@ -1,14 +1,11 @@
-import email
-from random import shuffle
-from re import S
-from unicodedata import name
-from urllib import response
+
 from django.test import TestCase, SimpleTestCase, Client
 from django.urls import reverse, resolve
 from pages.views import *
 from booking.views import *
 from products.views import *
 from owner.views import *
+from products.models import *
 # Create your tests here.
 
 
@@ -98,6 +95,14 @@ class TestViews(TestCase):
         client = Client()
         logged_in = client.login(username="username", password="password")
 
+        customer = Customer.objects.create(
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
         url = reverse('dash')
         response = client.get(url)
 
@@ -159,6 +164,14 @@ class TestViews(TestCase):
 
         url = reverse('delete-customer', args=[customer.id])
         response = client.post(url)
+        customer = Customer.objects.create(
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
         print(response.status_code)
       
         
@@ -174,8 +187,7 @@ class TestViews(TestCase):
 
         url = reverse('register')
         response = client.post(url, {
-            'fname': 'first name',
-            'laname': 'lastname',
+            'name': 'first name',
             'email': 'test email',
             'address': 'test adr',
             'phone': 'phone',
@@ -192,7 +204,15 @@ class TestViews(TestCase):
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
-
+        
+        customer = Customer.objects.create(
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
         url = reverse('products')
         response = client.get(url)
 
@@ -205,20 +225,31 @@ class TestViews(TestCase):
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
-
+        customer = Customer.objects.create(
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
+        category = Category.objects.create(name='new cat')
+        c_id = category.id
         product = Products.objects.create(
             title='product title',
             author='product author',
             description ='product description',
-            price = 100
+            price = 100,
+            category = category
         )
 
         url = reverse('update-product', args=[product.id])
         response = client.post(url, {
             'title':'new product title',
+            'price': 1200,
             'author':'new product author',
             'description': 'new product description',
-            'price': 1200
+            'category': category.id
 
         })
         
@@ -239,7 +270,14 @@ class TestViews(TestCase):
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
-
+        customer = Customer.objects.create(
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
         product = Products.objects.create(
             title='product title',
             author='product author',
@@ -261,6 +299,15 @@ class TestViews(TestCase):
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
+
+        customer = Customer.objects.create(
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
 
         url = reverse('admin-checkout')
         response = client.get(url)
@@ -402,6 +449,15 @@ class TestViews(TestCase):
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
+
+        customer = Customer.objects.create(
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
         
         product = Products.objects.create(
             title='product title',
