@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {%load static%}
 {% block maincontent%}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 <div>
     <br>
     <h1 style="padding-left: 350px;" id="login-header">
@@ -22,8 +25,7 @@
                         Name:
                     </label>
 
-                    <input id="login-input" type="text" class="form-control" name="name" value={{customer.name}}
-                        placeholder="Full name" />
+                    <input id="login-input" type="text" class="form-control" name="name" value={{customer.name}}/>
 
 
                 </div>

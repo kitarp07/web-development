@@ -70,3 +70,11 @@ def updateAccount(request, pk):
 
     context = {'form': form, 'customer': customer}
     return render(request, 'customer/updateAccount.html', context)
+
+def deletePersonalAccount(request, pk):
+    customer = Customer.objects.get(id=pk)
+    user = request.user
+    logout(request)
+    customer.delete()
+    
+    return redirect('/home/')

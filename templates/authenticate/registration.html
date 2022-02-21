@@ -6,7 +6,6 @@
 <head>
 
     <script src="{% static 'js/validation.js' %}"></script>
-
 </head>
 
 <div class="reg-container shadow">
@@ -15,10 +14,9 @@
         Register
     </h1>
     <br>
-
     <div class="login-inside form-group">
 
-        <form action="" method="post" onsubmit="validateCustomer($event)">
+        <form action="" method="post">
             {%csrf_token%}
             <div class="row">
 
@@ -27,7 +25,7 @@
                     <label id="login-label">
                         First name
                     </label>
-                    <input class="form-control" id="login-input" name="fname" placeholder="Full name" />
+                    <input class="form-control" id="login-input" name="fname" placeholder="Full name" required />
                 </div>
                 <br>
                 <br>
@@ -35,20 +33,20 @@
                     <label id="login-label">
                         Email
                     </label>
-                    <input class="form-control" name="email" id="login-input" placeholder="Email" />
+                    <input class="form-control" name="email" id="login-input" placeholder="Email" required />
                 </div>
                 <div class=" form-field">
                     <label id="login-label">
-                       Address
+                        Address
                     </label>
-                    <input class="form-control" name="address" id="login-input" placeholder="Address" />
+                    <input class="form-control" name="address" id="login-input" placeholder="Address" required  />
                 </div>
                 <br>
                 <div class=" form-field">
                     <label id="login-label">
                         Phone number
                     </label>
-                    <input class="form-control" name="phone" id="login-input" placeholder="Contact" />
+                    <input class="form-control" name="phone" id="login-input" placeholder="Contact" required />
                 </div>
                 <br>
 
@@ -56,7 +54,7 @@
                     <label id="login-label">
                         Username
                     </label>
-                    <input class="form-control" name="username" id="login-input" placeholder="Username" />
+                    <input class="form-control" name="username" id="login-input" placeholder="Username" required />
                 </div>
                 <br>
                 <div class="form-field">
@@ -64,21 +62,21 @@
                         Password
                     </label>
                     <input class="form-control" type="password" id="login-input" name="password"
-                        placeholder="Password" />
+                        placeholder="Password" required />
                 </div>
                 <div class="form-field">
                     <label id="login-label">
                         Confirm Password
                     </label>
-                    <input class="form-control" type="password" id="login-input" name="confirm-password"
-                        placeholder="Password" />
+                    <input class="form-control" type="password" id="login-input" name="cpassword"
+                        placeholder="Password" required />
                 </div>
                 <br>
                 <br>
                 <br>
                 <div>
-                    <input style="margin-top: 8px; width: 140px;" id="login-button" class="  btn btn-primary mb-2" type="submit" name="register"
-                        value="Create Account" placeholder="Create" />
+                    <input style="margin-top: 8px; width: 140px;" id="login-button" class="  btn btn-primary mb-2"
+                        type="submit" name="register" value="Create Account" placeholder="Create" />
                     <button style="margin-left: 10px; " id="login-button" class="btn btn-secondary">Cancel</button>
                 </div>
                 <br>
@@ -86,6 +84,18 @@
 
             </div>
         </form>
+        {% for message in messages %}
+        <script>
+            var url = '/login/'
+            alert('{{message}}')
+            if ('{{message}}' == 'Your account has been registered') {
+                window.location.href = "{%url 'login'%}"
+
+            }
+
+
+        </script>
+        {% endfor %}
 
     </div>
 

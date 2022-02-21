@@ -6,6 +6,9 @@ from booking.views import *
 from products.views import *
 from owner.views import *
 from products.models import *
+import datetime
+import json
+from django.contrib.auth.models import Group
 # Create your tests here.
 
 
@@ -88,9 +91,66 @@ class TestUrls(SimpleTestCase):
 
 
 class TestViews(TestCase):
-    def test_customer_dashboard(self):
+    def test_login(self):
         user = User.objects.create(username="username")
         user.set_password('password')
+        user.save()
+        client = Client()
+        logged_in = client.login(username="username", password="password")
+        
+        customer = Customer.objects.create(
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
+        customer.refresh_from_db()
+        url = reverse('login')
+        response = client.post(url, {
+            'username': 'username',
+            'password': 'password'
+        })
+
+        self.assertEquals(response.status_code, 302)
+        self.assertRedirects(response, '/dashboard/')
+
+    def test_register(self):
+        user = User.objects.create(username="username")
+        user.set_password('password')
+        user.save()
+        client = Client()
+        loggged_in = client.login(username="username", password="password")
+        customer = Customer.objects.create(
+            id=1,
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
+        customer.refresh_from_db()
+
+        url = reverse('register')
+        response = client.post(url, {
+            'name': 'first name',
+            'email': 'test email',
+            'address': 'test adr',
+            'phone': 'phone',
+            'username': 'username22',
+            'password': 'password'
+        })
+        print(response)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "authenticate/registration.html")
+    
+    def test_customer_board(self):
+        user = User.objects.create(username="username")
+        user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
@@ -112,6 +172,8 @@ class TestViews(TestCase):
     def test_update_customer(self):
         user = User.objects.create(username="username")
         user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
@@ -149,6 +211,8 @@ class TestViews(TestCase):
     def test_delete_customer(self):
         user = User.objects.create(username="username")
         user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
@@ -172,35 +236,19 @@ class TestViews(TestCase):
             username='username',
             password='password'
         )
-        print(response.status_code)
       
         
         self.assertEquals(response.status_code, 302)
         self.assertRedirects(response, '/dashboard/')
+        
 
-    def test_register(self):
-        user = User.objects.create(username="username")
-        user.set_password('password')
-        user.save()
-        client = Client()
-        loggged_in = client.login(username="username", password="password")
-
-        url = reverse('register')
-        response = client.post(url, {
-            'name': 'first name',
-            'email': 'test email',
-            'address': 'test adr',
-            'phone': 'phone',
-            'username': 'username22',
-            'password': 'password'
-        })
-        print(response)
-        self.assertEquals(response.status_code, 302)
-        self.assertRedirects(response, '/register/complete')
+    
 
     def test_product_dashboard(self):
         user = User.objects.create(username="username")
         user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
@@ -222,6 +270,8 @@ class TestViews(TestCase):
     def test_update_product(self):
         user = User.objects.create(username="username")
         user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
@@ -254,19 +304,16 @@ class TestViews(TestCase):
         })
         
         product.refresh_from_db()
-    
-
-        
         self.assertEquals(response.status_code, 302)
         self.assertEquals(product.title, 'new product title')
         self.assertEquals(product.author, 'new product author')
         self.assertRedirects(response, '/products/')
-
-    
     
     def test_delete_product(self):
         user = User.objects.create(username="username")
         user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
@@ -284,18 +331,17 @@ class TestViews(TestCase):
             description ='product description',
             price = 100
         )
-
         url = reverse('delete-product', args=[product.id])
         response = client.post(url)
-        print(response.status_code)
-      
-        
         self.assertEquals(response.status_code, 302)
         self.assertRedirects(response, '/products/')
     
     def test_adminCheckout(self):
         user = User.objects.create(username="username")
         user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
+        user.save()
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
@@ -318,6 +364,8 @@ class TestViews(TestCase):
     def test_addOrder(self):
         user = User.objects.create(username="username")
         user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
@@ -358,6 +406,8 @@ class TestViews(TestCase):
     def test_updateOrder(self):
         user = User.objects.create(username="username")
         user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
@@ -408,6 +458,8 @@ class TestViews(TestCase):
     def test_del_admin_checkout(self):
         user = User.objects.create(username="username")
         user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
         user.save()
         client = Client()
         logged_in = client.login(username="username", password="password")
@@ -486,3 +538,98 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'cart/customer_checkout.html')
+
+    def test_search(self):
+        client = Client()
+        url = reverse('search')
+        response = client.get(url, {
+            'search': 'Dune'
+        })
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'search.html')
+
+    def update_cart(self):
+        user = User.objects.create(username="username")
+        user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
+        user.save()
+        client = Client()
+        logged_in = client.login(username="username", password="password")
+
+        customer = Customer.objects.create(
+            id=1,
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
+        customer.refresh_from_db()
+       
+        product = Products.objects.create(
+            title='product title',
+            description ='product description',
+            price = 100
+        )
+        order = Order.objects.create(
+            customer=customer)
+        order.save()
+        orderProduct = OrderProduct.objects.create(
+             item=product, order=order, quantity=5)
+        items = order.orderproduct_set.all()
+        cartItems = order.getCartItems
+      
+        url = reverse('update-cart')
+        response = client.get(url, {
+            'productId': product.id,
+            'action': "add"
+        })
+
+        self.assertEquals(response.status_code, 200)
+
+
+    def test_customer_cart(self):
+        user = User.objects.create(username="username")
+        user.set_password('password')
+        group = Group.objects.create(name='admin')
+        user.groups.add(group)
+        user.save()
+        client = Client()
+        logged_in = client.login(username="username", password="password")
+
+        customer = Customer.objects.create(
+            id=1,
+            user=user,
+            name='full name',
+            email='test@email.com',
+            phone='918181818',
+            username='username',
+            password='password'
+        )
+        customer.refresh_from_db()
+       
+        product = Products.objects.create(
+            title='product title',
+            description ='product description',
+            price = 100
+        )
+        order = Order.objects.create(
+            customer=customer)
+        order.save()
+        orderProduct = OrderProduct.objects.create(
+             item=product, order=order, quantity=5)
+        items = order.orderproduct_set.all
+        cartItems = order.getCartItems
+        
+        url = reverse('checkout')
+        response = client.get(url)
+
+        self.assertEquals(response.status_code, 200)
+
+
+  
+
+

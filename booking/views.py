@@ -72,7 +72,6 @@ def updateCartData(request):
     return JsonResponse('Item added to cart', safe=False)
 
 def processCheckout(request):
-    print(request.body)
     checkoutId = datetime.datetime.now().timestamp()
     checkoutData = json.loads(request.body)
     if request.user.customer:

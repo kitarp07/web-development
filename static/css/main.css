@@ -5,13 +5,17 @@ height: 80px;
 
 }
 
-#search {
-    padding-left: 250px;
-    
-    padding-top: 30px;
+.img {
+    max-width: 100%;
 }
 
 #search-bar {
+   
+    padding-top: 30px;
+}
+
+#search {
+    margin-left: 60px;
     width: 500px; 
     height: 33px;
     border-style:solid;
@@ -182,7 +186,7 @@ height: 80px;
 .cart-box {
     display: flex;
     background-color: white;
-    box-shadow: hsl(0, 10%, 90%) 0 0 20px;
+    box-shadow: hsl(0, 10%, 100%) 0 0 8px;
 
     
 }
@@ -214,3 +218,85 @@ height: 80px;
 .book-container {
     padding-left: 50px;
 }
+
+.book-flex {
+    display: flex; 
+    flex-direction: row ;
+}
+
+.button-container{
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 390px ) and (max-width: 845px) { 
+
+#search {
+    width: 120px;
+    margin-left: 30px;
+}
+
+.logo {
+    padding-left: 0px;
+    padding-top: 20px;
+    width: 80px;
+    height: 80px;
+    
+    
+}
+
+.book-flex{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.button-container{
+    padding-left: 20px;
+}
+
+#login {
+    font-size: 10px;
+    width: 80px;
+}
+
+.login-container {
+    width: 400px;
+    margin-left: 0px;
+    box-shadow: hsl(0, 10%, 60%) 0 0 20px;
+    padding-bottom: 100px;
+    
+    
+    
+}
+
+.reg-container {
+    width: 400px;
+    margin-top: 30px;
+    margin-left: 0px;
+    border-bottom: 1px rgb(47, 38, 38);
+    border-color: black;
+    margin-bottom: 300px;
+    box-shadow: hsl(0, 10%, 60%) 0 0 20px;
+ 
+  
+    
+}
+
+#login-input {
+    width: 200px;
+    color: black;
+    box-shadow: 10px;
+}
+
+.cart-container {
+    width: 500px;
+    background-color: white;
+    margin-left: 0px;
+    border-bottom: 1px rgb(47, 38, 38);
+    border-color: black;
+    
+
+}
+}
+

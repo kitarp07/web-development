@@ -24,8 +24,20 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 
+
 @login_required(login_url='login')
-# @admin_restrcited
+@admin_restrcited
+def adminCustomer_view(request):
+    customer = Customer.objects.all()
+    paginator = Paginator(customer, 5)
+    page_no = request.GET.get('page')
+    page = paginator.get_page(page_no)
+    context = {'customers': page}
+    return render(request, 'admin/adminCustomer.html', context)
+
+
+@login_required(login_url='login')
+@admin_restrcited
 def updateCustomer(request, pk):
     customer = Customer.objects.get(id=pk)
     user = request.user
@@ -51,32 +63,20 @@ def updateCustomer(request, pk):
     context = {'form': form, 'customer': customer}
     return render(request, 'admin/updateCustomer.html', context)
 
+
 @login_required(login_url='login')
-# @admin_restrcited
+@admin_restrcited
 def deleteCustomer(request, pk):
     customer = Customer.objects.get(id=pk)
-    if request.method == 'POST':
-        customer.delete()
-        return redirect('/dashboard/')
-    context = {'customer': customer}
-    return render(request, 'admin/deleteCustomer.html', context)
-
-
-@login_required(login_url='login')
-# @admin_restrcited
-def adminCustomer_view(request):
-    customer = Customer.objects.all()
-    paginator = Paginator(customer, 5)
-    page_no = request.GET.get('page')
-    page = paginator.get_page(page_no)
-    context = {'customers': page}
-    return render(request, 'admin/adminCustomer.html', context)
+    customer.delete()
+    return redirect('/dashboard/')
+    
 
 # @login_required(login_url='login')
 # @admin_restrcited
 
 @login_required(login_url='login')
-# @admin_restrcited
+@admin_restrcited
 def adminProduct_view(request):
     product = Products.objects.all()
     paginator = Paginator(product, 5)
@@ -85,8 +85,9 @@ def adminProduct_view(request):
     context = {'products': page}
     return render(request, 'admin/adminProduct.html', context)
 
-# @login_required(login_url='login')
-# @admin_restrcited
+
+@login_required(login_url='login')
+@admin_restrcited
 def create_products_view(request):
     form = ProductForm()
     if request.method == 'POST':
@@ -98,8 +99,9 @@ def create_products_view(request):
     context = {'form': form, 'category': category}
     return render(request, 'admin/createProduct.html', context)
 
+
 @login_required(login_url='login')
-# @admin_restrcited
+@admin_restrcited
 def updateProduct(request, pk):
     product = Products.objects.get(id=pk)
     form = ProductForm(request.POST, request.FILES)
@@ -118,27 +120,21 @@ def updateProduct(request, pk):
         imageform.save()
         return redirect('/products/')
     category = Category.objects.all()
-    context = {'form': form, 'product': product, 'imageform': imageform, 'category': category}
+    context = {'form': form, 'product': product,
+               'imageform': imageform, 'category': category}
     return render(request, 'admin/updateproduct.html', context)
 
+
 @login_required(login_url='login')
-# @admin_restrcited
+@admin_restrcited
 def deleteProduct(request, pk):
     product = Products.objects.get(id=pk)
-    if request.method == 'POST':
-        product.delete()
-        return redirect('/products/')
-    context = {'product': product}
-    return render(request, 'admin/deleteproduct.html', context)
+    product.delete()
+    return redirect('/products/')
 
-
-def orders_view(request):
-    orders = Order.objects.all()
-    context = {'orders': orders}
-    return render(request, 'order/order.html', context)
 
 @login_required(login_url='login')
-# @admin_restrcited
+@admin_restrcited
 def createOrder(request):
     orderform = OrderForm()
     orderproductform = OrderProductForm()
@@ -156,6 +152,7 @@ def createOrder(request):
         orderProduct_object = Products.objects.get(id=orderProduct)
         order, created = Order.objects.get_or_create(
             customer=orderCustomer_object, order_placed=False, status=orderStatus, order_id=datetime.datetime.now().timestamp())
+        order.order_placed = True
         order.save()
         order.order_placed = True
         orderQuantity = request.POST.get('quantity')
@@ -175,8 +172,9 @@ def createOrder(request):
     context = {'customer': customer, 'product': product}
     return render(request, 'admin/createOrder.html', context)
 
+
 @login_required(login_url='login')
-# @admin_restrcited
+@admin_restrcited
 def updateOrder(request, pk):
     orderform = OrderForm()
     orderproductform = OrderProductForm()
@@ -186,8 +184,8 @@ def updateOrder(request, pk):
     orderProduct = OrderProduct.objects.get(id=pk)
     order = Order.objects.get(id=orderProduct.order.id)
     shipping = Checkout.objects.get(order=order.id)
-    orderProduct_item = Products.objects.get(id=orderProduct.item.id)   
-    orderCustomer_object = Customer.objects.get(id=order.customer.id) 
+    orderProduct_item = Products.objects.get(id=orderProduct.item.id)
+    orderCustomer_object = Customer.objects.get(id=order.customer.id)
     if request.method == 'POST':
         orderform = OrderForm(request.POST)
         orderproductform = OrderProductForm(request.POST)
@@ -199,6 +197,7 @@ def updateOrder(request, pk):
         updateProduct_object = Products.objects.get(id=orderItem)
         order.customer = updateCustomer_object
         order.status = orderStatus
+        order.order_placed = True
         order.save()
         orderQuantity = request.POST.get('quantity')
         orderProduct.quantity = orderQuantity
@@ -209,18 +208,28 @@ def updateOrder(request, pk):
         shipping.address = checkoutAddress
         shipping.city = checkoutCity
         shipping.save()
-       
+
         return redirect('/admincheckout/')
-    context = {'customer': customer, 'product': product, 
-    'orderProduct': orderProduct,
-    'order': order,
-    'shipping': shipping,
-    'orderProduct_item': orderProduct_item, 
-    'orderCustomer': orderCustomer_object}
+    context = {'customer': customer, 'product': product,
+               'orderProduct': orderProduct,
+               'order': order,
+               'shipping': shipping,
+               'orderProduct_item': orderProduct_item,
+               'orderCustomer': orderCustomer_object}
     return render(request, 'admin/updateOrder.html', context)
 
 @login_required(login_url='login')
-# @admin_restrcited
+@admin_restrcited
+def deleteCheckedoutOrder(request, pk):
+    orderproduct = OrderProduct.objects.get(id=pk)
+   
+    orderproduct.delete()
+    
+    return redirect('/admincheckout/')
+
+
+@login_required(login_url='login')
+@admin_restrcited
 def adminCheckout(request):
     checkout = Checkout.objects.all()
     orders_customer = Order.objects.all()
@@ -231,14 +240,3 @@ def adminCheckout(request):
     context = {'checkout': checkout, 'orders_customer': orders_customer,
                'orders_products': page}
     return render(request, 'admin/adminCheckout.html', context)
-
-@login_required(login_url='login')
-# @admin_restrcited
-def deleteCheckedoutOrder(request, pk):
-    order = OrderProduct.objects.get(id=pk)
-    if request.method == 'POST':
-        order.delete()
-
-        return redirect('/admincheckout/')
-    context = {'product': product}
-    return render(request, 'admin/deleteproduct.html', context)

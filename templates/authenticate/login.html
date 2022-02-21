@@ -1,6 +1,9 @@
 {%extends 'base.html'%}
 {% load static %}
 {%block maincontent%}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
 <div class="login-container shadow">
     <br>
@@ -34,6 +37,18 @@
                 <button style="margin-left: 10px;" id="login-button" class="btn btn-secondary">Cancel</button>
             </div>
         </form>
+        {% for message in messages %}
+        <script>
+            var url = '/login/'
+            alert('{{message}}')
+            if ('{{message}}' == 'Wrong Credentials. Please try again') {
+                window.location.href = "{%url 'login'%}"
+
+            }
+
+
+        </script>
+        {% endfor %}
 
     </div>
     <hr>

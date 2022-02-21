@@ -5,6 +5,7 @@ from math import prod
 from multiprocessing import context
 from operator import itemgetter
 import re
+from turtle import title
 from unicodedata import category
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
@@ -21,6 +22,7 @@ from products.models import Category, Products
 from booking.models import Checkout, Order, OrderProduct
 import datetime
 from django.core.paginator import Paginator
+from django.contrib import messages
 
 
 # Create your views here.
@@ -33,11 +35,13 @@ def login_view(request):
         print(username)
         print(password)
 
+        
         user = authenticate(request, username=username, password=password)
+        if user is None:
+            messages.success(request, "Wrong Credentials. Please try again")
         if user is not None:
-
             login(request, user)
-            return redirect('/dashboard')
+            return redirect('/home/')
 
     return render(request, 'authenticate/login.html')
 
@@ -47,16 +51,7 @@ def logoutUser(request):
     return redirect('login')
 
 
-# def loginEntry(request):
-#     pass
-#     # user = request.POST['username']
-#     # password = request.POST['password']
-#     # user = authenticate(request, username=user, password=password)
-#     # login(request, user)
-#     # if user.is_authenticated:
-#     #     return redirect('/dashboard/')
-#     # else:
-#     #     return('/login/')
+
 
 
 def new_view(request):
@@ -71,18 +66,23 @@ def reg_view(request):
             un = form.cleaned_data['username']
             em = form.cleaned_data['email']
             pw = form.cleaned_data['password']
+            cpw = request.POST.get('cpassword')
 
-            user = User.objects.create_user(un, em, pw)
+            if pw == cpw:
+                user = User.objects.create_user(un, em, pw)
+                user.save()
 
             # group = Group.objects.get(name='customer')
             # user.groups.add(group)
 
-            user.save()
 
-            customer = form.save(commit=False)
-            customer.user = user
-            customer.save()
-            return redirect('regcomplete')
+                customer = form.save(commit=False)
+                customer.user = user
+                customer.save()
+                messages.success(request, 'Your account has been registered')
+            elif pw != cpw:
+                 messages.success(request, "Passwords don't match. Try again.")
+           
 
     context = {'form': form}
 
@@ -141,9 +141,40 @@ def home(request):
         items = []
         order = {'getCartTotal': 0, 'getCartItems': 0}
         cartItems = order['getCartItems']
+    
     products = Products.objects.all()
     category = Category.objects.all()
     context = {'products': products, 'items': items,
                'order': order, 'cartItems': cartItems,
                'category': category,}
     return render(request, 'homepage.html', context)
+
+def sortProducts(request, choice):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+    # get or create order
+        order, created = Order.objects.get_or_create(
+            customer=customer, order_placed=False)
+        items = order.orderproduct_set.all()
+        cartItems = order.getCartItems
+    else:
+        items = []
+        order = {'getCartTotal': 0, 'getCartItems': 0}
+        cartItems = order['getCartItems']
+    category_object = Category.objects.get(name=choice)
+    category_id = category_object.id
+    products = Products.objects.filter(category = category_id)
+   
+    context = {'category': category_object,'products': products,
+               'items': items,'order': order, 'cartItems': cartItems}
+
+    return render(request, "sortProduct.html", context)
+
+
+
+def searchProducts(request):
+    if request.method == 'GET':
+        search = request.GET['search']
+        products = Products.objects.filter(title__icontains=search)
+    context = {'products': products, 'search': search}
+    return render(request, 'search.html', context)

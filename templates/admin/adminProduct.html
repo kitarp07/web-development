@@ -5,7 +5,8 @@
 <h1 style="font-family: Arial, Helvetica, sans-serif; font-size: 23px; display: inline;">
     Products
 </h1>
-<a  style="padding-left: 800px; display: inline;" href="{% url 'add-product' %}"><button class="btn btn-primary text-right"> Add Product</button></a>
+<a style="padding-left: 800px; display: inline;" href="{% url 'add-product' %}"><button
+        class="btn btn-primary text-right"> Add Product</button></a>
 <br>
 <br>
 <div class="table-responsive">
@@ -38,9 +39,34 @@
                 <td>{{product.date_added}}</td>
                 <td>{{product.category}}</td>
                 <td><a class="btn btn-sm btn-info" href="{% url 'update-product' product.id %}">Update</a></td>
-                <td><a class="btn btn-sm btn-danger" href="{% url 'delete-product' product.id %}">Remove</a></td>
+                <td><button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalproduct">Remove</button></td>
 
             </tr>
+            <!-- Button trigger modal -->
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalproduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirm Delete?</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <a href="/delete-product/{{product.id}}" type="submit" class="btn btn-primary">Delete
+                                </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {%endfor%}
         </tbody>
 
@@ -57,9 +83,9 @@
         </li>
         {% else %}
         <li class="page-item">
-            <li class="disabled" ><a class="page-link" aria-label="Previous" href="#">&laquo;</a></li>
+        <li class="disabled"><a class="page-link" aria-label="Previous" href="#">&laquo;</a></li>
         </li>
-       
+
         {%endif%}
 
         {% for i in products.paginator.page_range%}
@@ -79,13 +105,12 @@
         </li>
         {% else %}
         <li class="page-item">
-            <li class="disabled"><a class="page-link" aria-label="Previous" href="#">&laquo;</a></li>
+        <li class="disabled"><a class="page-link" aria-label="Previous" href="#">&laquo;</a></li>
         </li>
-        
+
         {%endif%}
 
 
     </ul>
 </nav>
 {%endblock%}
-
